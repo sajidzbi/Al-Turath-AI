@@ -540,14 +540,15 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
 <div id="toast"></div>
 
 <!-- ═══════════════ PWA INSTALL BANNER ═══════════════ -->
-/* INSTALL BANNER */
-.inst-banner{background:linear-gradient(135deg,#0078d4,#005a9e);border-radius:var(--r2);padding:13px 14px;margin-bottom:14px;display:flex;align-items:center;gap:11px;box-shadow:0 4px 20px rgba(0,120,212,.3);animation:slideD .4s ease;cursor:pointer}
-.inst-banner.hidden{display:none}
-@keyframes slideD{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-.inst-ico{font-size:26px}.inst-txt{flex:1}.inst-ttl{display:block;font-size:13px;font-weight:700;color:#fff}.inst-sub{font-size:11px;color:rgba(255,255,255,.8);font-family:var(--ur-font)}
-.inst-do{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;padding:7px 13px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background var(--trans)}
-.inst-do:hover{background:rgba(255,255,255,.3)}
-.inst-x{background:none;border:none;color:rgba(255,255,255,.7);font-size:18px;cursor:pointer;padding:4px;line-height:1}
+<div id="pwa-banner">
+  <div class="pwa-icon">📖</div>
+  <div class="pwa-text">
+    <div class="pwa-title">Install Al-Turath AI</div>
+    <div class="pwa-sub">Add to Home Screen</div>
+  </div>
+  <button class="pwa-install" id="pwa-install-btn">Install</button>
+  <button class="pwa-close" onclick="closePwaBanner()">✕</button>
+</div>
 
 <!-- ═══════════════ SPLASH ═══════════════ -->
 <div id="splash" onclick="skipSplash()">
@@ -952,7 +953,12 @@ var detailUrl = '';
 var pwaPrompt = null;
 
 function showPwaBanner(){
+  // Don't show if already installed permanently
+  if(localStorage.getItem('pwa-installed')) return;
+  // Don't show if dismissed in this session
   if(sessionStorage.getItem('pwa-dismissed')) return;
+  // Only show if the install prompt is available
+  if(!pwaPrompt) return;
   var b = document.getElementById('pwa-banner');
   if(b) b.classList.add('show');
 }
@@ -1189,27 +1195,72 @@ setTimeout(function(){
   if(s && s.style.display !== 'none'){ skipSplash(); }
 }, 5000);
 
-/* ── PWA INSTALL — always show banner on load ── */
+/* ── PWA INSTALL — Full working implementation ── */
+
+// Capture beforeinstallprompt as early as possible (at script parse time)
+// This listener is set before DOMContentLoaded so the event is not missed
 window.addEventListener('beforeinstallprompt', function(e){
   e.preventDefault();
   pwaPrompt = e;
+  // Show the banner if it hasn't been permanently dismissed
+  if(!localStorage.getItem('pwa-installed')){
+    var b = document.getElementById('pwa-banner');
+    if(b) b.classList.add('show');
+  }
 });
 
 window.addEventListener('appinstalled', function(){
-  closePwaBanner();
-  showToast('Al-Turath AI installed ✦');
+  pwaPrompt = null;
+  // Mark as installed permanently
+  localStorage.setItem('pwa-installed', '1');
+  // Hide banner
+  var b = document.getElementById('pwa-banner');
+  if(b) b.classList.remove('show');
+  // Update button to "Installed ✓"
+  var btn = document.getElementById('pwa-install-btn');
+  if(btn){
+    btn.textContent = 'Installed ✓';
+    btn.style.background = '#4CAF50';
+    btn.style.color = '#fff';
+    btn.disabled = true;
+    btn.style.opacity = '0.85';
+  }
+  showToast('Al-Turath AI installed successfully ✦');
+  // Auto-hide banner after 2.5 seconds
+  setTimeout(function(){
+    var b2 = document.getElementById('pwa-banner');
+    if(b2) b2.classList.remove('show');
+  }, 2500);
 });
 
 document.getElementById('pwa-install-btn').addEventListener('click', function(){
+  var btn = this;
   if(pwaPrompt){
+    // Show the native install dialog
     pwaPrompt.prompt();
-    pwaPrompt.userChoice.then(function(r){
+    pwaPrompt.userChoice.then(function(choiceResult){
+      if(choiceResult.outcome === 'accepted'){
+        // User accepted — button will update via appinstalled event
+        btn.textContent = 'Installing...';
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+      } else {
+        // User dismissed — close banner gracefully
+        closePwaBanner();
+      }
       pwaPrompt = null;
-      closePwaBanner();
     });
+  } else if(localStorage.getItem('pwa-installed')){
+    // Already installed
+    btn.textContent = 'Installed ✓';
+    btn.style.background = '#4CAF50';
+    btn.style.color = '#fff';
+    btn.disabled = true;
+    setTimeout(closePwaBanner, 1200);
   } else {
+    // Fallback for iOS / unsupported browsers
     showToast('Tap browser menu → "Add to Home Screen"');
-    setTimeout(closePwaBanner, 800);
+    setTimeout(closePwaBanner, 1200);
   }
 });
 </script>
