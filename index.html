@@ -10,7 +10,40 @@
 <meta name="theme-color" content="#1B6B4A">
 <meta name="description" content="Al-Turath AI — Bridging Tradition with Innovation. AI-powered Islamic research platform by Dr. Sajid Mahmood, Hazara University.">
 <title>Al-Turath AI</title>
+<link rel="manifest" id="pwa-manifest-link">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<script>
+// Inject PWA manifest dynamically as inline data URI
+(function(){
+  var manifest = {
+    "name": "Al-Turath AI",
+    "short_name": "Al-Turath",
+    "description": "AI-powered Islamic research platform by Dr. Sajid Mahmood, Hazara University.",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#134D35",
+    "theme_color": "#1B6B4A",
+    "orientation": "portrait-primary",
+    "icons": [
+      {
+        "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%231B6B4A'/%3E%3Cg fill='%23C49A2A'%3E%3Cpath d='M30,180 L30,72 Q30,12 96,12 Q162,12 162,72 L162,180 L144,180 L144,76 Q144,32 96,32 Q48,32 48,76 L48,180 Z'/%3E%3Crect x='48' y='100' width='96' height='5' rx='2'/%3E%3Crect x='48' y='126' width='96' height='5' rx='2'/%3E%3Crect x='48' y='152' width='96' height='5' rx='2'/%3E%3Crect x='70' y='76' width='5' height='104' rx='2'/%3E%3Crect x='93' y='76' width='5' height='104' rx='2'/%3E%3Crect x='116' y='76' width='5' height='104' rx='2'/%3E%3C/g%3E%3C/svg%3E",
+        "sizes": "192x192",
+        "type": "image/svg+xml",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231B6B4A'/%3E%3Cg fill='%23C49A2A'%3E%3Cpath d='M80,480 L80,192 Q80,32 256,32 Q432,32 432,192 L432,480 L384,480 L384,200 Q384,80 256,80 Q128,80 128,200 L128,480 Z'/%3E%3Crect x='128' y='268' width='256' height='14' rx='6'/%3E%3Crect x='128' y='336' width='256' height='14' rx='6'/%3E%3Crect x='128' y='404' width='256' height='14' rx='6'/%3E%3Crect x='186' y='200' width='14' height='280' rx='6'/%3E%3Crect x='249' y='200' width='14' height='280' rx='6'/%3E%3Crect x='312' y='200' width='14' height='280' rx='6'/%3E%3C/g%3E%3C/svg%3E",
+        "sizes": "512x512",
+        "type": "image/svg+xml",
+        "purpose": "any maskable"
+      }
+    ]
+  };
+  var blob = new Blob([JSON.stringify(manifest)], {type: 'application/manifest+json'});
+  var url = URL.createObjectURL(blob);
+  document.getElementById('pwa-manifest-link').href = url;
+})();
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
@@ -1202,10 +1235,16 @@ setTimeout(function(){
 window.addEventListener('beforeinstallprompt', function(e){
   e.preventDefault();
   pwaPrompt = e;
-  // Show the banner if it hasn't been permanently dismissed
-  if(!localStorage.getItem('pwa-installed')){
-    var b = document.getElementById('pwa-banner');
-    if(b) b.classList.add('show');
+  // If splash is already gone, show banner immediately; otherwise showPwaBanner()
+  // will be called after splash exits
+  if(!localStorage.getItem('pwa-installed') && !sessionStorage.getItem('pwa-dismissed')){
+    var splash = document.getElementById('splash');
+    var splashGone = splash && (splash.style.display === 'none' || splash.style.opacity === '0');
+    if(splashGone){
+      var b = document.getElementById('pwa-banner');
+      if(b) b.classList.add('show');
+    }
+    // else: showPwaBanner() will be called when splash exits (in skipSplash/initApp)
   }
 });
 
@@ -1268,7 +1307,35 @@ document.getElementById('pwa-install-btn').addEventListener('click', function(){
 <!-- Service Worker Registration for PWA -->
 <script>
 if('serviceWorker' in navigator){
-  window.addEventListener('load', function(){
-    var sw = 'data:application/javascript;base64,' + btoa([
-      "var C='al-turath-v1';",
-      "self.addEven
+  // Use data: URI — the only way to register an inline SW from a single HTML file.
+  // blob: URLs are blocked by browsers for SW registration (origin mismatch).
+  var swScript =
+    "var C='al-turath-v2';" +
+    "self.addEventListener('install',function(e){" +
+    "  e.waitUntil(caches.open(C).then(function(cache){return cache.addAll([])}));" +
+    "  self.skipWaiting();" +
+    "});" +
+    "self.addEventListener('activate',function(e){" +
+    "  e.waitUntil(clients.claim());" +
+    "});" +
+    "self.addEventListener('fetch',function(e){" +
+    "  e.respondWith(caches.match(e.request).then(function(r){" +
+    "    return r||fetch(e.request).catch(function(){return new Response('',{status:503});});" +
+    "  }));" +
+    "});";
+
+  var swDataUrl = 'data:application/javascript;base64,' + btoa(swScript);
+
+  navigator.serviceWorker.register(swDataUrl)
+    .then(function(reg){
+      console.log('[Al-Turath] SW registered OK');
+    })
+    .catch(function(err){
+      // data: URI may also be blocked in some browsers — that's OK,
+      // PWA install still works without SW on some platforms.
+      console.info('[Al-Turath] SW skipped (data URI blocked by browser):', err.message);
+    });
+}
+</script>
+</body>
+</html>
