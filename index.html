@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Al-Turath AI">
+<meta name="theme-color" content="#1B6B4A">
+<meta name="description" content="Al-Turath AI — Bridging Tradition with Innovation. AI-powered Islamic research platform by Dr. Sajid Mahmood, Hazara University.">
 <title>Al-Turath AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -443,12 +449,83 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
 .util-card:nth-child(4){animation-delay:.21s}
 .util-card:nth-child(5){animation-delay:.28s}
 .util-card:nth-child(6){animation-delay:.35s}
+
+/* ─── PWA INSTALL BANNER ─── */
+#pwa-banner{
+  position:fixed;top:0;left:0;right:0;z-index:600;
+  background:#1a56a0;
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  transform:translateY(-110%);
+  transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:0 3px 16px rgba(0,0,0,0.22);
+  max-width:480px;margin:0 auto;
+}
+#pwa-banner.show{transform:translateY(0)}
+.pwa-icon{
+  width:40px;height:40px;background:rgba(255,255,255,0.15);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.pwa-icon svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.pwa-text{flex:1;min-width:0}
+.pwa-title{font-family:'Lato',sans-serif;font-weight:700;font-size:0.82rem;color:#fff;line-height:1.2}
+.pwa-sub{font-size:0.68rem;color:rgba(255,255,255,0.7);margin-top:1px}
+.pwa-install{
+  background:#fff;color:#1a56a0;border:none;border-radius:7px;
+  padding:7px 14px;font-size:0.8rem;font-family:'Lato',sans-serif;font-weight:700;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;transition:opacity 0.2s;
+}
+.pwa-install:hover{opacity:0.9}
+.pwa-close{
+  background:transparent;border:none;color:rgba(255,255,255,0.7);
+  cursor:pointer;padding:2px 4px;font-size:1.1rem;line-height:1;flex-shrink:0;
+}
+
+/* ─── ABOUT / DEVELOPER CARD ─── */
+.about-card{
+  background:linear-gradient(135deg,var(--green-dark) 0%,var(--green) 100%);
+  border-radius:var(--radius);padding:18px;margin-bottom:10px;
+  position:relative;overflow:hidden;
+}
+.about-geo{position:absolute;right:-15px;top:-15px;width:110px;height:110px;opacity:0.08;pointer-events:none}
+.about-ver{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.15);border-radius:20px;
+  padding:3px 10px;font-size:0.66rem;color:rgba(255,255,255,0.85);
+  margin-bottom:10px;letter-spacing:0.1em;font-family:'Lato',sans-serif;font-weight:700;
+}
+.about-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:2px}
+.about-role{font-size:0.76rem;color:rgba(255,255,255,0.75);margin-bottom:1px}
+.about-inst{font-size:0.72rem;color:rgba(255,255,255,0.55);margin-bottom:14px}
+.about-contacts{display:flex;flex-direction:column;gap:7px}
+.about-contact-row{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,0.12);border-radius:9px;padding:8px 12px;
+  cursor:pointer;transition:background 0.2s;border:none;width:100%;text-align:left;
+}
+.about-contact-row:hover{background:rgba(255,255,255,0.2)}
+.about-contact-row svg{width:15px;height:15px;fill:none;stroke:rgba(255,255,255,0.8);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.about-contact-lbl{font-size:0.64rem;color:rgba(255,255,255,0.55);font-family:'Lato',sans-serif;font-weight:700;letter-spacing:0.08em;margin-bottom:1px}
+.about-contact-val{font-size:0.82rem;color:#fff}
 </style>
 </head>
 <body>
 
 <div id="bg-tile"></div>
 <div id="toast"></div>
+
+<!-- ═══════════════ PWA INSTALL BANNER ═══════════════ -->
+<div id="pwa-banner">
+  <div class="pwa-icon">
+    <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+  </div>
+  <div class="pwa-text">
+    <div class="pwa-title">Install Al-Turath AI</div>
+    <div class="pwa-sub">Add to Home Screen</div>
+  </div>
+  <button class="pwa-install" id="pwa-install-btn">Install</button>
+  <button class="pwa-close" onclick="closePwaBanner()">✕</button>
+</div>
 
 <!-- ═══════════════ SPLASH ═══════════════ -->
 <div id="splash" onclick="skipSplash()">
@@ -758,40 +835,31 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
       </div>
       <div class="pg-inner" style="padding-top:16px">
 
-        <div class="info-blk">
-          <div class="info-blk-hdr">CONTACT INFORMATION</div>
-          <div class="info-row tap" onclick="doWhatsApp()">
-            <div class="i-icon" style="background:#E8F5E9"><svg style="stroke:#2E7D32" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.09h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 5.72 5.72l.94-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.07 16a2 2 0 0 1 .93.92z"/></svg></div>
-            <div><div class="i-lbl">WHATSAPP</div><div class="i-val" id="dsp-wa">03009080730</div></div>
-          </div>
-          <div class="info-row tap" onclick="doEmail()">
-            <div class="i-icon" style="background:#E8F5EE"><svg style="stroke:#1B6B4A" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-            <div><div class="i-lbl">EMAIL</div><div class="i-val"><a id="dsp-email" href="/cdn-cgi/l/email-protection#2f5c4e45464b554d466f48424e4643014c4042"><span class="__cf_email__" data-cfemail="f28193989b9688909bb2959f939b9edc919d9f">[email&#160;protected]</span></a></div></div>
+        <!-- About / Developer Card -->
+        <div class="about-card">
+          <svg class="about-geo" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#fff" stroke-width="0.6">
+              <polygon points="55,4 104,29.5 104,80.5 55,106 6,80.5 6,29.5"/>
+              <circle cx="55" cy="55" r="26"/>
+            </g>
+          </svg>
+          <div class="about-ver">✦ Al-Turath AI — v3.0</div>
+          <div class="about-name">Dr. Sajid Mahmood</div>
+          <div class="about-role">Dept. of Islamic &amp; Religious Studies</div>
+          <div class="about-inst">Hazara University, Mansehra</div>
+          <div class="about-contacts">
+            <button class="about-contact-row" onclick="doWhatsApp()">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.09h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 5.72 5.72l.94-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.07 16a2 2 0 0 1 .93.92z"/></svg>
+              <div><div class="about-contact-lbl">WHATSAPP</div><div class="about-contact-val">03009080730</div></div>
+            </button>
+            <button class="about-contact-row" onclick="doEmail()">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <div><div class="about-contact-lbl">EMAIL</div><div class="about-contact-val">sajidzbi@gmail.com</div></div>
+            </button>
           </div>
         </div>
-
-        <div class="info-blk">
-          <div class="info-blk-hdr">ACADEMIC AFFILIATION</div>
-          <div class="info-row">
-            <div class="i-icon" style="background:#EBF2FD"><svg style="stroke:#1565C0" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-            <div><div class="i-lbl">INSTITUTION</div><div class="i-val" id="dsp-inst2">Hazara University, Mansehra</div></div>
-          </div>
-          <div class="info-row">
-            <div class="i-icon" style="background:#F3EEF9"><svg style="stroke:#7B3FA0" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
-            <div><div class="i-lbl">DEPARTMENT</div><div class="i-val" id="dsp-dept2">Dept. of Islamic &amp; Religious Studies</div></div>
-          </div>
-        </div>
-
-        <div class="info-blk">
-          <div class="info-blk-hdr">PLATFORM ACTIVITY</div>
-          <div class="info-row">
-            <div class="i-icon" style="background:#E8F5EE"><svg style="stroke:#1B6B4A" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
-            <div><div class="i-lbl">SAVED TOOLS</div><div class="i-val" id="dsp-saved">0 items saved</div></div>
-          </div>
-          <div class="info-row">
-            <div class="i-icon" style="background:#FEFBE8"><svg style="stroke:#B8860B" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-            <div><div class="i-lbl">PLATFORM</div><div class="i-val">Al-Turath AI — v3.0</div></div>
-          </div>
+        <div style="text-align:center;padding:6px 0 4px;font-size:0.7rem;color:var(--text4);font-family:'Lato',sans-serif">
+          © 2025 Al-Turath AI · Developed by Dr. Sajid Mahmood
         </div>
 
         <div class="spacer"></div>
@@ -1073,6 +1141,59 @@ setTimeout(function(){
   var s = document.getElementById('splash');
   if(s && s.style.display !== 'none'){ skipSplash(); }
 }, 5000);
+
+/* ── PWA INSTALL ── */
+var pwaPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  pwaPrompt = e;
+  setTimeout(function(){
+    var b = document.getElementById('pwa-banner');
+    if(b) b.classList.add('show');
+  }, 2500);
+});
+window.addEventListener('appinstalled', function(){
+  closePwaBanner();
+  showToast('Al-Turath AI installed ✦');
+});
+document.getElementById('pwa-install-btn').addEventListener('click', function(){
+  if(pwaPrompt){
+    pwaPrompt.prompt();
+    pwaPrompt.userChoice.then(function(r){
+      pwaPrompt = null;
+      closePwaBanner();
+    });
+  } else {
+    showToast('Tap Share → "Add to Home Screen"');
+    closePwaBanner();
+  }
+});
+function closePwaBanner(){
+  var b = document.getElementById('pwa-banner');
+  if(b) b.classList.remove('show');
+}
+</script>
+
+<!-- Service Worker Registration for PWA -->
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    var sw = 'data:application/javascript;base64,' + btoa([
+      "var C='al-turath-v1';",
+      "self.addEventListener('install',function(e){",
+      "  e.waitUntil(caches.open(C).then(function(c){",
+      "    return c.addAll(['/']);",
+      "  }));",
+      "});",
+      "self.addEventListener('fetch',function(e){",
+      "  e.respondWith(caches.match(e.request).then(function(r){",
+      "    return r||fetch(e.request);",
+      "  }));",
+      "});"
+    ].join(''));
+    navigator.serviceWorker.register(sw).catch(function(){});
+  });
+}
 </script>
 </body>
 </html>
