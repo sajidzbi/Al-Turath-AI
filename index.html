@@ -93,7 +93,7 @@ body{font-family:'Lato',sans-serif;color:var(--text);font-size:15px}
 /* ─── TOOL DETAIL PAGE ─── */
 #tool-detail{
   position:fixed;inset:0;z-index:180;background:var(--bg);
-  display:flex;flex-direction:column;
+  display:none;flex-direction:column;
   transform:translateY(100%);transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
   overflow-y:auto;
 }
@@ -503,8 +503,8 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
   </div>
 </div>
 
-<!-- ═══════════════ TOOL DETAIL PAGE (hidden — not used in direct mode) ═══════════════ -->
-<div id="tool-detail" style="display:none">
+<!-- ═══════════════ TOOL DETAIL PAGE ═══════════════ -->
+<div id="tool-detail">
   <div class="detail-topbar">
     <button class="detail-back" onclick="closeDetail()">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -521,11 +521,10 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
     </div>
     <div class="detail-name" id="det-name">Insight Quranic Studies</div>
     <div class="detail-arabic" id="det-arabic">دراسات قرآنية</div>
-    <div class="detail-desc" id="det-desc">Deep research into Tafsir, Quranic Sciences, Qira'at &amp; Exegetical Methodologies</div>
-    <div class="detail-notice">This AI tool is hosted on Google Gemini. It will open in a new tab for the best experience.</div>
+    <div class="detail-desc" id="det-desc" style="font-size:0.9rem;color:var(--text3);line-height:1.7;margin-bottom:22px;max-width:340px;text-align:center"></div>
     <button class="detail-launch" id="det-launch-btn" onclick="launchFromDetail()">
       <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      <span id="det-btn-lbl">Launch Insight Quranic Studies</span>
+      <span id="det-btn-lbl">Launch AI Scholar</span>
     </button>
     <div class="detail-urdu" id="det-urdu">تفسیر، علوم القرآن، قراءات اور مفسرین کے مناہج — قرآن کریم کا گہرا تحقیقی مطالعہ</div>
   </div>
@@ -569,7 +568,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
         </svg>
         <div class="hero-title">Al-Turath <span>AI</span></div>
         <div class="hero-slogan">BRIDGING TRADITION WITH INNOVATION</div>
-        <div class="hero-p">An advanced AI-powered platform for deep research and scholarly exploration across Islamic sciences — from Quranic Studies to Hadith, Fiqh, and beyond.</div>
+        <div class="hero-p">An advanced AI-powered platform for deep research and scholarly exploration across Islamic Sciences — from Quranic Studies to Hadith, Fiqh, and beyond.</div>
         <div class="hero-scroll"><div class="scroll-ball"></div></div>
       </div>
 
@@ -583,7 +582,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
       <div class="cards-grid" id="cards-grid">
 
         <!-- 1. Quranic Studies -->
-        <div class="t-card" onclick="openDetail('Insight Quranic Studies AI','دراسات قرآنية','A focused AI system centered on the Qur\'an as the primary source, integrating the study of Qira\'at, Uloom al-Qur\'an, and Tafsir, along with the analytical methodologies of classical and contemporary scholars. It provides research-based insights and intellectually engaging reflections.','تفسیر، علوم القرآن، قراءات اور مفسرین کے مناہج — قرآن کریم کا گہرا تحقیقی مطالعہ','https://gemini.google.com/gem/1qptTw7IQ4z722a54VAnylwba7A2bX_gh?usp=sharing','quran')">
+        <div class="t-card" onclick="openDetail('Insight Quranic Studies AI','دراسات قرآنية','A focused AI system centered on the Qur\'an as the primary source, integrating the study of Qira\'at, Uloom al-Qur\'an, and Tafsir, along with the analytical methodologies of classical and contemporary scholars. It provides research-based insights and intellectually engaging reflections.','تفسیرِ قرآن، علوم القرآن، قراءات اور مفسرین کے مناہج واسالیب','https://gemini.google.com/gem/1qptTw7IQ4z722a54VAnylwba7A2bX_gh?usp=sharing','quran')">
           <button class="t-save" id="sv-quran" onclick="toggleSave(event,'Insight Quranic Studies AI','quran')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
           <div class="t-icon" style="background:#E8F5EE"><svg style="stroke:#1B6B4A" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
           <div class="t-card-body">
@@ -594,7 +593,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
         </div>
 
         <!-- 2. Hadith Studies -->
-        <div class="t-card" onclick="openDetail('Insight Hadith Studies AI','دراسات الحديث','A focused AI system grounded in the study of Hadith as the core source, encompassing Uloom al-Hadith, Sharh al-Hadith, and the methodologies of the Muhaddithin. It offers critical, research-based insights and thought-provoking scholarly analysis.','حدیث کے متن، شرح الحدیث، علم الرجال اور محدثین کے مناہج کا تنقیدی و تحقیقی جائزہ','https://gemini.google.com/gem/19WGu7XwaNBokK6HJPFha105V2chLZ2CF?usp=sharing','hadith')">
+        <div class="t-card" onclick="openDetail('Insight Hadith Studies AI','دراسات حديثية','A focused AI system grounded in the study of Hadith as the core source, encompassing Uloom al-Hadith, Sharh al-Hadith, and the methodologies of the Muhaddithin. It offers critical, research-based insights and thought-provoking scholarly analysis.','متنِ حدیث، شرح الحدیث، علوم الحدیث اور محدثین کے مناہج واسالیب','https://gemini.google.com/gem/19WGu7XwaNBokK6HJPFha105V2chLZ2CF?usp=sharing','hadith')">
           <button class="t-save" id="sv-hadith" onclick="toggleSave(event,'Insight Hadith Studies AI','hadith')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
           <div class="t-icon" style="background:#E3F4F0"><svg style="stroke:#1B6B4A" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <div class="t-card-body">
@@ -605,7 +604,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
         </div>
 
         <!-- 3. Seerah Quest -->
-        <div class="t-card" onclick="openDetail('Insight Seerah-Quest','فقه السيرة النبوية','A focused AI system dedicated to the study of the Seerah of the Prophet \u0635, emphasizing event-based analysis, Fiqh al-Seerah, and the methodologies and literary styles of Seerah scholars. It delivers structured, research-oriented insights.','سیرت النبی ﷺ کا واقعاتی مطالعہ، فقہ السیرۃ اور سیرت نگاروں کے اسالیب و مناہج','https://gemini.google.com/gem/1eLUI5h-oRNxb8xmFSf0BXjEqTDbULeIH?usp=sharing','seerah')">
+        <div class="t-card" onclick="openDetail('Insight Seerah-Quest','السيرة النبوية','A focused AI system dedicated to the study of the Seerah of the Prophet \u0635, emphasizing event-based analysis, Fiqh al-Seerah, and the methodologies and literary styles of Seerah scholars. It delivers structured, research-oriented insights.','سیرت النبی ﷺ، فقہ السیرۃ اور نامور سیرت نگاروں کے مناہج واسالیب','https://gemini.google.com/gem/1eLUI5h-oRNxb8xmFSf0BXjEqTDbULeIH?usp=sharing','seerah')">
           <button class="t-save" id="sv-seerah" onclick="toggleSave(event,'Insight Seerah-Quest','seerah')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
           <div class="t-icon" style="background:#F3EEF9"><svg style="stroke:#7B3FA0" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg></div>
           <div class="t-card-body">
@@ -616,7 +615,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
         </div>
 
         <!-- 4. Islamic Fiqh -->
-        <div class="t-card" onclick="openDetail('Insight Islamic Fiqh AI','الفقه الإسلامي','A focused AI system presenting Islamic jurisprudence through both its foundational principles and applied dimensions, rooted in Usul al-Fiqh, and addressing classical and contemporary legal concerns with scholarly depth and clarity.','اصول فقہ کی روشنی میں فقہی مسائل، احکام کی توضیح اور استنباط کے اصول — کلاسیکی و معاصر جزئیات','https://gemini.google.com/gem/1UFc8IxAgOJ73vxXziJbsaPO_tUwlasPn?usp=sharing','fiqh')">
+        <div class="t-card" onclick="openDetail('Insight Islamic Fiqh AI','الفقه الإسلامي','A focused AI system presenting Islamic jurisprudence through both its foundational principles and applied dimensions, rooted in Usul al-Fiqh, and addressing classical and contemporary legal concerns with scholarly depth and clarity.','فقہی مسائل (قدیم وجدید)، اصولِ فقہ، مقاصدِ شریعت اور فقہاء کے مناہج واسالیب','https://gemini.google.com/gem/1UFc8IxAgOJ73vxXziJbsaPO_tUwlasPn?usp=sharing','fiqh')">
           <button class="t-save" id="sv-fiqh" onclick="toggleSave(event,'Insight Islamic Fiqh AI','fiqh')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
           <div class="t-icon" style="background:#EBF2FD"><svg style="stroke:#1565C0" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
           <div class="t-card-body">
@@ -627,7 +626,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
         </div>
 
         <!-- 5. Atheism Critique -->
-        <div class="t-card" onclick="openDetail('Insight Atheism Critique AI','الدفاع عن الإسلام','A focused AI system that critically examines atheism, modern skepticism, and contemporary ideologies, offering a well-reasoned, scholarly, and intellectual defense of Islamic belief.','الحاد، جدید شکوک اور معاصر نظریاتی چیلنجز کا علمی تجزیہ اور اسلام کا مضبوط عقلی دفاع','https://gemini.google.com/gem/1rBvefCKzFY9pB-WgWg2E5cl-mQW1QyNi?usp=sharing','atheism')">
+        <div class="t-card" onclick="openDetail('Insight Atheism Critique AI','نقدِ الحاد','A focused AI system that critically examines atheism, modern skepticism, and contemporary ideologies, offering a well-reasoned, scholarly, and intellectual defense of Islamic belief.','الحاد، جدید شکوک وشبہات اور معاصر نظریاتی چیلنجز کے علمی وعقلی جوابات','https://gemini.google.com/gem/1rBvefCKzFY9pB-WgWg2E5cl-mQW1QyNi?usp=sharing','atheism')">
           <button class="t-save" id="sv-atheism" onclick="toggleSave(event,'Insight Atheism Critique AI','atheism')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
           <div class="t-icon" style="background:#FEF0E8">
             <svg style="stroke:#D4500A" viewBox="0 0 24 24">
@@ -644,7 +643,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
         </div>
 
         <!-- 6. Signs & Trials -->
-        <div class="t-card" onclick="openDetail('Insight Signs &amp; Trials AI','أشراط الساعة','A focused AI system that explores the signs of the Day of Judgment, the emergence of Dajjal, and the major trials of the end times, grounded in the Qur\'an and Hadith, providing both analytical insight and practical guidance.','علامات قیامت، دجال اور آخری زمانے کے فتنوں کا قرآن و حدیث کی روشنی میں علمی و عملی تجزیہ','https://gemini.google.com/gem/1ix6bFjJ6eD5V-1l4R-WZYu17x9937SCw?usp=sharing','signs')">
+        <div class="t-card" onclick="openDetail('Insight Signs &amp; Trials AI','ظہورِ فتن اور علاماتِ قیامت','A focused AI system that explores the signs of the Day of Judgment, the emergence of Dajjal, and the major trials of the end times, grounded in the Qur\'an and Hadith, providing both analytical insight and practical guidance.','دجال، علامات قیامت اور آخری زمانے کے فتنوں کا قرآن و حدیث کی روشنی میں تجزیہ','https://gemini.google.com/gem/1ix6bFjJ6eD5V-1l4R-WZYu17x9937SCw?usp=sharing','signs')">
           <button class="t-save" id="sv-signs" onclick="toggleSave(event,'Insight Signs &amp; Trials AI','signs')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
           <div class="t-icon" style="background:#FEFBE8">
             <svg style="stroke:#B8860B" viewBox="0 0 24 24">
@@ -660,7 +659,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
         </div>
 
         <!-- 7. Orientalism -->
-        <div class="t-card" onclick="openDetail('Insight Orientalism AI','نقد الاستشراق','A focused AI system dedicated to the critical study of Orientalism and the methodologies of Orientalists, offering research-based analysis and scholarly responses to their objections concerning the Qur\'an, Hadith, Fiqh, and Arabic language and literature.','مستشرقین اور ان کے مناہج کا تنقیدی جائزہ — قرآن، حدیث، فقہ اور عربی زبان و ادب پر اعتراضات کا علمی رد','https://gemini.google.com/gem/1afefPdkkuQ9YMSAJPTs_07-PTnBkGvow?usp=sharing','orient')">
+        <div class="t-card" onclick="openDetail('Insight Orientalism AI','نقدِ استشراق','A focused AI system dedicated to the critical study of Orientalism and the methodologies of Orientalists, offering research-based analysis and scholarly responses to their objections concerning the Qur\'an, Hadith, Fiqh, and Arabic language and literature.','مباحثِ استشراق اور مستشرقین کے اعتراضات کا علمی رد','https://gemini.google.com/gem/1afefPdkkuQ9YMSAJPTs_07-PTnBkGvow?usp=sharing','orient')">
           <button class="t-save" id="sv-orient" onclick="toggleSave(event,'Insight Orientalism AI','orient')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
           <div class="t-icon" style="background:#E0F4F1"><svg style="stroke:#00695C" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></div>
           <div class="t-card-body">
@@ -674,7 +673,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
 
       <!-- Featured Card -->
       <div class="feat-wrap">
-        <div class="feat-card" onclick="openDetail('Insight Quranic Studies AI','دراسات قرآنية','A focused AI system centered on the Qur\'an as the primary source, integrating the study of Qira\'at, Uloom al-Qur\'an, and Tafsir, along with the analytical methodologies of classical and contemporary scholars. It provides research-based insights and intellectually engaging reflections.','تفسیر، علوم القرآن، قراءات اور مفسرین کے مناہج — قرآن کریم کا گہرا تحقیقی مطالعہ','https://gemini.google.com/gem/1qptTw7IQ4z722a54VAnylwba7A2bX_gh?usp=sharing','quran')">
+        <div class="feat-card" onclick="openDetail('Insight Quranic Studies AI','دراسات قرآنية','A focused AI system centered on the Qur\'an as the primary source, integrating the study of Qira\'at, Uloom al-Qur\'an, and Tafsir, along with the analytical methodologies of classical and contemporary scholars. It provides research-based insights and intellectually engaging reflections.','تفسیرِ قرآن، علوم القرآن، قراءات اور مفسرین کے مناہج واسالیب','https://gemini.google.com/gem/1qptTw7IQ4z722a54VAnylwba7A2bX_gh?usp=sharing','quran')">
           <svg class="feat-bg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#fff" stroke-width="0.8"><polygon points="60,4 114,32 114,88 60,116 6,88 6,32"/><circle cx="60" cy="60" r="30"/></g></svg>
           <div class="feat-tag">✦ START HERE</div>
           <div class="feat-title">Begin Your Scholarly Journey</div>
@@ -706,7 +705,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
       <div class="pg-inner">
         <div class="section-row" style="padding-left:0;padding-right:0"><div class="sec-line"></div><div class="sec-lbl">FEATURED APPS</div><div class="sec-line"></div></div>
 
-        <div class="util-card" onclick="launchUtil('SM Prayer Times','Loading SM Prayer Times...','https://sajidzbi.github.io/SM-Prayer-Times/')">
+        <div class="util-card" onclick="launchUtil('SM Prayer Times','Loading Prayer Times...','https://sajidzbi.github.io/SM-Prayer-Times')">
           <div class="util-icon" style="background:#E8F5EE"><svg style="stroke:#1B6B4A" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
           <div class="util-info"><div class="util-name">SM Prayer Times</div><div class="util-desc">Accurate Salah timings with multiple calculation methods, Qibla direction, and Converter of Hijri &amp; Gregorian dates.</div></div>
           <div class="util-btn">Open</div>
@@ -720,7 +719,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
 
         <div class="util-card" onclick="launchUtil('SM Shariah Scales Conerter','Opening SM Shariah Scales Conerter...','https://sajidzbi.github.io/Shariah-Scales-Converter/')">
           <div class="util-icon" style="background:#FEF0E8"><svg style="stroke:#D4500A" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <div class="util-info"><div class="util-name">SM Shariah Scales Conerter</div><div class="util-desc">Weight, Capacity &amp; Measurement conversions using classical Islamic units — Dinar, Dirham, Saa, Mudd, Bareed, Farsakh &amp; more.</div></div>
+          <div class="util-info"><div class="util-name">SM Shariah Scales</div><div class="util-desc">Weight, Capacity &amp; Measurement conversions using classical Islamic units — Dinar, Dirham, Saa, Mudd, Bareed, Farsakh &amp; more.</div></div>
           <div class="util-btn">Open</div>
         </div>
 
@@ -924,24 +923,55 @@ function goPage(pg){
   if(pg==='profile') upSavedCount();
 }
 
-/* ── TOOL DETAIL — direct open, no intermediate page ── */
+/* ── TOOL DETAIL PAGE ── */
 var detData = {};
+var toolIcons = {
+  quran:  { bg:'#1B6B4A', svg:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>' },
+  hadith: { bg:'#1B6B4A', svg:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>' },
+  seerah: { bg:'#6B3A9E', svg:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>' },
+  fiqh:   { bg:'#1565C0', svg:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>' },
+  atheism:{ bg:'#B84000', svg:'<line x1="12" y1="3" x2="12" y2="21"/><path d="M5 21h14"/><circle cx="6" cy="14" r="3"/><circle cx="18" cy="14" r="3"/><line x1="3" y1="10" x2="9" y2="10"/><line x1="15" y1="10" x2="21" y2="10"/>' },
+  signs:  { bg:'#8B6500', svg:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/><path d="M19 3l.5 1.5L21 5l-1.5.5L19 7l-.5-1.5L17 5l1.5-.5z"/>' },
+  orient: { bg:'#005F56', svg:'<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>' }
+};
+
 function openDetail(name, arabic, desc, urdu, url, key){
   detData = {name:name, arabic:arabic, desc:desc, urdu:urdu, url:url, key:key};
   detailUrl = url;
-  // Show a quick brief loading toast then open directly
-  showToast('Opening ' + name + '...');
-  setTimeout(function(){
-    window.open(url, '_blank');
-  }, 400);
+
+  // Fill detail page content
+  var ti = toolIcons[key] || toolIcons.quran;
+  document.getElementById('det-icon').style.background = ti.bg;
+  document.getElementById('det-icon-svg').innerHTML = ti.svg;
+  document.getElementById('det-name').textContent = name;
+  document.getElementById('det-arabic').textContent = arabic;
+  document.getElementById('det-desc').textContent = desc;
+  var urduEl = document.getElementById('det-urdu');
+  if(urduEl) urduEl.textContent = urdu;
+  var btnLbl = document.getElementById('det-btn-lbl');
+  if(btnLbl) btnLbl.textContent = 'Launch ' + name;
+
+  // Slide up detail page
+  var det = document.getElementById('tool-detail');
+  det.style.display = 'flex';
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      det.classList.add('show');
+    });
+  });
+  det.scrollTop = 0;
 }
+
 function closeDetail(){
-  var d = document.getElementById('tool-detail');
-  if(d) d.classList.remove('show');
+  var det = document.getElementById('tool-detail');
+  det.classList.remove('show');
+  setTimeout(function(){ det.style.display = 'none'; }, 460);
 }
+
 function openDetailUrl(){
   if(detailUrl) window.open(detailUrl,'_blank');
 }
+
 function launchFromDetail(){
   if(detailUrl) window.open(detailUrl,'_blank');
 }
