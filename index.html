@@ -890,7 +890,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
             </div>
             <div class="prof-contact-info">
               <div class="prof-contact-lbl">EMAIL</div>
-              <div class="prof-contact-val">sajidzbi@gmail.com</div>
+              <div class="prof-contact-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ea998b80838e908883aa8d878b8386c4898587">[email&#160;protected]</a></div>
             </div>
             <svg class="prof-contact-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
@@ -941,7 +941,7 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── PROFILE DATA ── */
 var P = {
   name:'Dr. Sajid Mahmood', dept:'Dept. of Islamic & Religious Studies',
@@ -950,6 +950,18 @@ var P = {
 var saved = {};
 var curPage = 'home';
 var detailUrl = '';
+var pwaPrompt = null;
+
+function showPwaBanner(){
+  if(sessionStorage.getItem('pwa-dismissed')) return;
+  var b = document.getElementById('pwa-banner');
+  if(b) b.classList.add('show');
+}
+function closePwaBanner(){
+  var b = document.getElementById('pwa-banner');
+  if(b) b.classList.remove('show');
+  sessionStorage.setItem('pwa-dismissed','1');
+}
 
 function skipSplash(){
   var s = document.getElementById('splash');
@@ -961,7 +973,7 @@ function skipSplash(){
   s.style.transition = 'opacity 0.5s ease';
   s.style.opacity = '0';
   s.style.pointerEvents = 'none';
-  setTimeout(function(){ s.style.display = 'none'; }, 520);
+  setTimeout(function(){ s.style.display = 'none'; showPwaBanner(); }, 520);
 }
 
 /* ── SPLASH ── */
@@ -981,6 +993,7 @@ function initApp(){
     s.style.pointerEvents = 'none';
     setTimeout(function(){
       s.style.display = 'none';
+      showPwaBanner();
     }, 850);
   }, 3000);
 }
@@ -1177,20 +1190,17 @@ setTimeout(function(){
   if(s && s.style.display !== 'none'){ skipSplash(); }
 }, 5000);
 
-/* ── PWA INSTALL ── */
-var pwaPrompt = null;
+/* ── PWA INSTALL — always show banner on load ── */
 window.addEventListener('beforeinstallprompt', function(e){
   e.preventDefault();
   pwaPrompt = e;
-  setTimeout(function(){
-    var b = document.getElementById('pwa-banner');
-    if(b) b.classList.add('show');
-  }, 2500);
 });
+
 window.addEventListener('appinstalled', function(){
   closePwaBanner();
   showToast('Al-Turath AI installed ✦');
 });
+
 document.getElementById('pwa-install-btn').addEventListener('click', function(){
   if(pwaPrompt){
     pwaPrompt.prompt();
@@ -1199,14 +1209,10 @@ document.getElementById('pwa-install-btn').addEventListener('click', function(){
       closePwaBanner();
     });
   } else {
-    showToast('Tap Share → "Add to Home Screen"');
-    closePwaBanner();
+    showToast('Tap browser menu → "Add to Home Screen"');
+    setTimeout(closePwaBanner, 800);
   }
 });
-function closePwaBanner(){
-  var b = document.getElementById('pwa-banner');
-  if(b) b.classList.remove('show');
-}
 </script>
 
 <!-- Service Worker Registration for PWA -->
@@ -1215,10 +1221,4 @@ if('serviceWorker' in navigator){
   window.addEventListener('load', function(){
     var sw = 'data:application/javascript;base64,' + btoa([
       "var C='al-turath-v1';",
-      "self.addEventListener('install',function(e){",
-      "  e.waitUntil(caches.open(C).then(function(c){",
-      "    return c.addAll(['/']);",
-      "  }));",
-      "});",
-      "self.addEventListener('fetch',function(e){",
-      "  e.respondWi
+      "self.addEven
