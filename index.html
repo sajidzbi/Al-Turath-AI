@@ -445,6 +445,11 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
 .t-card:nth-child(5){animation-delay:.24s}
 .t-card:nth-child(6){animation-delay:.30s}
 .t-card:nth-child(7){animation-delay:.36s}
+.t-card:nth-child(8){animation-delay:.42s}
+.t-card:nth-child(9){animation-delay:.48s}
+.t-card:nth-child(10){animation-delay:.54s}
+.t-card:nth-child(11){animation-delay:.60s}
+.t-card:nth-child(12){animation-delay:.66s}
 .util-card:nth-child(1){animation-delay:.00s}
 .util-card:nth-child(2){animation-delay:.07s}
 .util-card:nth-child(3){animation-delay:.14s}
@@ -773,6 +778,61 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
 
       </div>
 
+        <!-- 8. Fiqh al-Halal -->
+        <div class="t-card" onclick="openDetail('Insight Fiqh al-Halal &amp; Its Standards','فقه الحلال والمعايير','A focused AI System for scholarly analysis of Fiqh al-Halal, Nutrition Standards, and Compliance with International &amp; National Halal Food Regulations.','فقہ الحلال، غذائی معیارات اور بین الاقوامی وقومی حلال فوڈ ضوابط کا علمی تجزیہ','https://gemini.google.com/gem/4445b3dbdee0','halal')">
+          <button class="t-save" id="sv-halal" onclick="toggleSave(event,'Insight Fiqh al-Halal &amp; Its Standards','halal')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#E8F5EE"><svg style="stroke:#2E7D32" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Fiqh al-Halal &amp; Its Standards</div>
+            <div class="t-desc">Scholarly analysis of Fiqh al-Halal, Nutrition Standards &amp; compliance with International &amp; National Halal Food Regulations.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 9. Islamic History -->
+        <div class="t-card" onclick="openDetail('Insight History-Quest','التاريخ الإسلامي','A focused AI System for scholarly analysis of Islamic History, spanning from the Rashidun Caliphate to the Umayyads, Abbasids, Muslim Spain, Ottoman Empire, and the Indian Subcontinent.','خلافتِ راشدہ سے عثمانی سلطنت اور برصغیر تک — اسلامی تاریخ کا علمی وتحقیقی مطالعہ','https://gemini.google.com/gem/1k-UkWlbuCAN8ZM454gLOEyWa8_BXGvcy?usp=sharing','history')">
+          <button class="t-save" id="sv-history" onclick="toggleSave(event,'Insight History-Quest','history')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#FFF8E1"><svg style="stroke:#F57F17" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight History-Quest</div>
+            <div class="t-desc">Islamic History from Rashidun Caliphate to the Umayyads, Abbasids, Muslim Spain, Ottoman Empire &amp; the Indian Subcontinent.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 10. Ilm ul-Kalam & Philosophy -->
+        <div class="t-card" onclick="openDetail('Insight Ilm-ul-Kalam &amp; Philosophy AI','علم الكلام والفلسفة','A focused AI System for scholarly analysis of theological and philosophical discourse, examining arguments, methodologies, and intellectual traditions across classical and modern thought.','علمِ کلام اور فلسفہ — کلاسیکی ومعاصر فکری روایات اور دلائل کا علمی جائزہ','https://gemini.google.com/gem/1kapu_mPR4DM8vhI9agfbJVNDQkpBXlkr?usp=sharing','kalam')">
+          <button class="t-save" id="sv-kalam" onclick="toggleSave(event,'Insight Ilm-ul-Kalam &amp; Philosophy AI','kalam')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#EDE7F6"><svg style="stroke:#512DA8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Ilm-ul-Kalam &amp; Philosophy AI</div>
+            <div class="t-desc">Theological &amp; philosophical discourse — examining arguments, methodologies &amp; intellectual traditions across classical and modern thought.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 11. Religion Quest -->
+        <div class="t-card" onclick="openDetail('Insight Religion-Quest','دراسات الأديان','A focused AI System for scholarly and research-based analysis of world religions, examining beliefs, scriptures, doctrines, and historical development across classical and modern contexts.','عالمی ادیان کا تقابلی مطالعہ — عقائد، متون، عقائد اور تاریخی ارتقاء کا علمی تجزیہ','https://gemini.google.com/gem/1qxvAZ2CJOz34hnN1WEjmNHP0wswVzxcB?usp=sharing','religion')">
+          <button class="t-save" id="sv-religion" onclick="toggleSave(event,'Insight Religion-Quest','religion')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#FCE4EC"><svg style="stroke:#C62828" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Religion-Quest</div>
+            <div class="t-desc">Scholarly analysis of world religions — beliefs, scriptures, doctrines &amp; historical development across classical and modern contexts.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 12. Tasawwuf Studies -->
+        <div class="t-card" onclick="openDetail('Insight Tasawwuf Studies','دراسات التصوف','A focused AI System for rigorous scholarly analysis of Tasawwuf, examining its doctrines, methods, texts, and development across classical and modern contexts.','تصوف کے عقائد، طریقے، متون اور کلاسیکی وجدید سیاق میں ارتقاء کا علمی تجزیہ','https://gemini.google.com/gem/1x42tOT2MCv6aAFlpPlhf40TgELKHiyNL?usp=sharing','tasawwuf')">
+          <button class="t-save" id="sv-tasawwuf" onclick="toggleSave(event,'Insight Tasawwuf Studies','tasawwuf')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#F3E5F5"><svg style="stroke:#6A1B9A" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Tasawwuf Studies</div>
+            <div class="t-desc">Rigorous scholarly analysis of Tasawwuf — its doctrines, methods, texts, and development across classical and modern contexts.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
       <!-- Featured Card -->
       <div class="feat-wrap">
         <div class="feat-card" onclick="openDetail('Insight Quranic Studies AI','دراسات قرآنية','A focused AI system centered on the Qur\'an as the primary source, integrating the study of Qira\'at, Uloom al-Qur\'an, and Tafsir, along with the analytical methodologies of classical and contemporary scholars. It provides research-based insights and intellectually engaging reflections.','تفسیرِ قرآن، علوم القرآن، قراءات اور مفسرین کے مناہج واسالیب','https://gemini.google.com/gem/1qptTw7IQ4z722a54VAnylwba7A2bX_gh?usp=sharing','quran')">
@@ -1050,7 +1110,12 @@ var toolIcons = {
   fiqh:   { bg:'#1565C0', svg:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>' },
   atheism:{ bg:'#B84000', svg:'<line x1="12" y1="3" x2="12" y2="21"/><path d="M5 21h14"/><circle cx="6" cy="14" r="3"/><circle cx="18" cy="14" r="3"/><line x1="3" y1="10" x2="9" y2="10"/><line x1="15" y1="10" x2="21" y2="10"/>' },
   signs:  { bg:'#8B6500', svg:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/><path d="M19 3l.5 1.5L21 5l-1.5.5L19 7l-.5-1.5L17 5l1.5-.5z"/>' },
-  orient: { bg:'#005F56', svg:'<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>' }
+  orient:   { bg:'#005F56', svg:'<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>' },
+  halal:    { bg:'#2E7D32', svg:'<path d="M9 12l2 2 4-4"/><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>' },
+  history:  { bg:'#E65100', svg:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>' },
+  kalam:    { bg:'#512DA8', svg:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>' },
+  religion: { bg:'#C62828', svg:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>' },
+  tasawwuf: { bg:'#6A1B9A', svg:'<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' }
 };
 
 function openDetail(name, arabic, desc, urdu, url, key){
@@ -1108,7 +1173,12 @@ var toolMeta = {
   fiqh:   {stroke:'#1565C0',bg:'#EBF2FD'},
   atheism:{stroke:'#D4500A',bg:'#FEF0E8'},
   signs:  {stroke:'#B8860B',bg:'#FEFBE8'},
-  orient: {stroke:'#00695C',bg:'#E0F4F1'}
+  orient: {stroke:'#00695C',bg:'#E0F4F1'},
+  halal:  {stroke:'#2E7D32',bg:'#E8F5EE'},
+  history:{stroke:'#E65100',bg:'#FFF8E1'},
+  kalam:  {stroke:'#512DA8',bg:'#EDE7F6'},
+  religion:{stroke:'#C62828',bg:'#FCE4EC'},
+  tasawwuf:{stroke:'#6A1B9A',bg:'#F3E5F5'}
 };
 function toggleSave(e, label, key){
   e.stopPropagation();
