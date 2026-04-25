@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Al-Turath AI">
+<meta name="theme-color" content="#1B6B4A">
+<meta name="description" content="Al-Turath AI — Bridging Tradition with Innovation. AI-powered Islamic research platform by Dr. Sajid Mahmood, Hazara University.">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Al-Turath AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --green:#1B6B4A;--green-dark:#134D35;--green-mid:#1E7A54;
+  --green-light:#2A9068;--green-pale:#E8F5EE;--green-bg:#F0F7F3;
+  --gold:#C49A2A;--gold-light:#DEB84A;--gold-pale:#FBF4E0;
+  --text:#1A2E22;--text2:#3A5244;--text3:#6B8878;--text4:#9BB0A4;
+  --bg:#F7F9F7;--bg2:#FFFFFF;--bg3:#EEF4F0;
+  --border:#D4E6DA;--border2:#B8D4C2;
+  --radius:14px;--radius-lg:20px;--radius-sm:10px;
+  --shadow:0 2px 12px rgba(27,107,74,0.08);
+  --shadow2:0 4px 24px rgba(27,107,74,0.12);
+}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:'Lato',sans-serif;color:var(--text);font-size:15px}
+
+/* ─── GEO TILE BG ─── */
+#bg-tile{
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.045;
+  background-image:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%231B6B4A' stroke-width='0.6'%3E%3Cpolygon points='40,3 74,21 74,59 40,77 6,59 6,21'/%3E%3Cpolygon points='40,14 62,26 62,54 40,66 18,54 18,26'/%3E%3Ccircle cx='40' cy='40' r='14'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:80px 80px;
+}
+
+/* ─── SPLASH ─── */
+#splash{
+  position:fixed;inset:0;z-index:300;background:var(--green-dark);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity 0.9s ease,transform 0.9s ease;
+}
+#splash.hide{opacity:0;transform:scale(1.04);pointer-events:none}
+.splash-logo-img{
+  width:130px;height:130px;margin-bottom:2rem;
+  animation:splashScale 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.3s both;
+}
+@keyframes splashScale{from{opacity:0;transform:scale(0.6)}to{opacity:1;transform:scale(1)}}
+.splash-title{
+  font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;
+  color:#fff;text-align:center;line-height:1;margin-bottom:0.35rem;
+  animation:fadeUp 0.8s ease 0.7s both;
+}
+.splash-title span{color:var(--gold-light)}
+.splash-sub{
+  font-family:'Lato',sans-serif;font-size:0.72rem;letter-spacing:0.22em;
+  color:rgba(255,255,255,0.55);text-align:center;margin-bottom:2.8rem;
+  animation:fadeUp 0.8s ease 0.9s both;
+}
+.splash-bar-wrap{
+  width:160px;height:2px;background:rgba(255,255,255,0.15);
+  border-radius:2px;overflow:hidden;animation:fadeUp 0.5s ease 1.1s both;
+}
+.splash-bar{height:100%;width:0;background:var(--gold-light);animation:barFill 2.4s ease 1.1s forwards}
+@keyframes barFill{to{width:100%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ─── TRANSITION / LAUNCH SCREEN ─── */
+#trans{
+  position:fixed;inset:0;z-index:200;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.35s ease;
+}
+#trans.show{opacity:1;pointer-events:all}
+.trans-bg{position:absolute;inset:0;background:var(--green-dark)}
+.trans-pattern{
+  position:absolute;inset:0;opacity:0.07;
+  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='0.5'%3E%3Cpolygon points='30,2 56,16 56,44 30,58 4,44 4,16'/%3E%3Cpolygon points='30,12 46,21 46,39 30,48 14,39 14,21'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:60px 60px;
+}
+.trans-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:0 30px}
+.trans-icon-box{
+  width:110px;height:110px;background:rgba(255,255,255,0.12);
+  border-radius:28px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:2rem;animation:iconFloat 2s ease infinite;
+}
+@keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.trans-icon-box svg{width:56px;height:56px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.trans-name{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:#fff;text-align:center;margin-bottom:0.5rem}
+.trans-arabic{font-family:'Amiri',serif;font-size:1rem;color:var(--gold-light);text-align:center;margin-bottom:1.5rem}
+.trans-progress-wrap{width:200px;height:2px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden;margin-bottom:0}
+.trans-progress{height:100%;width:0;background:#fff;border-radius:2px}
+.trans-progress.running{animation:transBar 1.8s ease forwards}
+@keyframes transBar{to{width:70%}}
+.trans-status{margin-top:14px;display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.7);font-size:0.82rem}
+.trans-spin{width:14px;height:14px;border:1.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── TOOL DETAIL PAGE ─── */
+#tool-detail{
+  position:fixed;inset:0;z-index:180;background:var(--bg);
+  display:none;flex-direction:column;
+  transform:translateY(100%);transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
+  overflow-y:auto;
+}
+#tool-detail.show{transform:translateY(0)}
+.detail-topbar{
+  padding:14px 18px;display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid var(--border);background:var(--bg2);
+  position:sticky;top:0;z-index:5;
+}
+.detail-back{
+  display:flex;align-items:center;gap:6px;background:transparent;border:none;
+  cursor:pointer;color:var(--green);font-size:0.9rem;font-family:'Lato',sans-serif;
+  font-weight:700;padding:4px 0;
+}
+.detail-back svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.detail-dot{width:8px;height:8px;border-radius:50%;background:#4CAF50;margin:0 auto}
+.detail-open{
+  background:transparent;border:none;cursor:pointer;color:var(--text3);
+  display:flex;align-items:center;
+}
+.detail-open svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.detail-body{padding:40px 24px 30px;display:flex;flex-direction:column;align-items:center;text-align:center;max-width:480px;margin:0 auto;width:100%}
+.detail-icon{
+  width:100px;height:100px;border-radius:26px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:22px;
+  box-shadow:0 8px 28px rgba(27,107,74,0.2);
+}
+.detail-icon svg{width:50px;height:50px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.detail-name{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.detail-arabic{font-family:'Amiri',serif;font-size:1.05rem;color:var(--gold);margin-bottom:12px}
+.detail-desc{font-size:0.92rem;color:var(--text3);line-height:1.65;margin-bottom:24px;max-width:320px}
+.detail-notice{
+  background:var(--bg3);border-radius:var(--radius);padding:14px 16px;
+  font-size:0.84rem;color:var(--text3);line-height:1.6;margin-bottom:22px;
+  width:100%;text-align:center;border:1px solid var(--border);
+}
+.detail-launch{
+  width:100%;background:var(--green);color:#fff;border:none;border-radius:var(--radius-lg);
+  padding:16px;font-size:1rem;font-family:'Lato',sans-serif;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:background 0.2s,transform 0.15s;letter-spacing:0.04em;
+  box-shadow:0 4px 18px rgba(27,107,74,0.25);
+}
+.detail-launch:hover{background:var(--green-dark);transform:translateY(-1px)}
+.detail-launch:active{transform:scale(0.98)}
+.detail-launch svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.detail-urdu{margin-top:20px;font-family:'Amiri',serif;font-size:0.95rem;color:var(--text4);line-height:1.8;direction:rtl;text-align:center}
+
+/* ─── APP SHELL ─── */
+#app{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column}
+#app.hidden{visibility:hidden;pointer-events:none}
+.page-wrap{flex:1;overflow:hidden;position:relative}
+.page{
+  position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+  display:flex;flex-direction:column;
+  transform:translateX(100%);opacity:0;
+  transition:transform 0.4s cubic-bezier(0.4,0,0.2,1),opacity 0.4s ease;
+  -webkit-overflow-scrolling:touch;
+}
+.page.active{transform:translateX(0);opacity:1}
+.page.out-left{transform:translateX(-30%);opacity:0}
+
+/* ─── HEADER ─── */
+.app-hdr{
+  padding:12px 18px 10px;background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;position:sticky;top:0;z-index:10;
+}
+.hdr-left{display:flex;align-items:center;gap:10px}
+.hdr-logo-box{
+  width:36px;height:36px;background:var(--green);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.hdr-logo-box svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.hdr-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--text);line-height:1.1}
+.hdr-name span{color:var(--gold)}
+.hdr-tag{font-size:0.6rem;color:var(--text4);letter-spacing:0.15em;font-family:'Lato',sans-serif}
+.hdr-btn{
+  width:36px;height:36px;background:var(--bg3);border-radius:10px;border:none;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  color:var(--text3);transition:all 0.2s;
+}
+.hdr-btn:hover{background:var(--green-pale);color:var(--green)}
+.hdr-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ─── BOTTOM NAV ─── */
+.bot-nav{
+  display:flex;background:var(--bg2);border-top:1px solid var(--border);
+  padding:8px 0 16px;flex-shrink:0;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;color:var(--text4);transition:color 0.2s;
+  padding:4px 0;background:transparent;border:none;
+}
+.nav-btn.active{color:var(--green)}
+.nav-btn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.nav-btn span{font-size:0.58rem;letter-spacing:0.1em;font-family:'Lato',sans-serif;font-weight:700}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--green);margin-top:2px;opacity:0;transition:opacity 0.2s}
+.nav-btn.active .nav-dot{opacity:1}
+
+/* ─── HOME PAGE ─── */
+.home-hero{
+  background:var(--bg2);padding:28px 22px 22px;text-align:center;
+  border-bottom:1px solid var(--border);
+}
+.hero-logo-wrap{
+  width:72px;height:72px;background:var(--green);border-radius:20px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;box-shadow:0 6px 22px rgba(27,107,74,0.22);
+}
+.hero-logo-wrap svg{width:40px;height:40px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.hero-compass{
+  width:64px;height:64px;margin:0 auto 14px;
+}
+.hero-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.hero-title span{color:var(--gold)}
+.hero-slogan{font-size:0.7rem;letter-spacing:0.2em;color:var(--text3);margin-bottom:12px;font-family:'Lato',sans-serif;font-weight:700}
+.hero-p{font-size:0.9rem;color:var(--text3);line-height:1.65;max-width:320px;margin:0 auto 10px}
+.hero-scroll{
+  width:28px;height:44px;border:1.5px solid var(--border2);border-radius:20px;
+  margin:16px auto 0;display:flex;align-items:flex-start;justify-content:center;padding-top:6px;
+}
+.scroll-ball{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:scrollBounce 1.8s ease infinite}
+@keyframes scrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+.section-row{
+  display:flex;align-items:center;gap:10px;padding:18px 18px 10px;
+}
+.sec-line{flex:1;height:1px;background:var(--border)}
+.sec-lbl{font-size:0.68rem;letter-spacing:0.2em;color:var(--text4);white-space:nowrap;font-family:'Lato',sans-serif;font-weight:700}
+
+/* Tool Cards */
+.cards-grid{display:grid;grid-template-columns:1fr;gap:11px;padding:0 16px}
+.t-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px 16px 14px;cursor:pointer;transition:all 0.25s ease;
+  position:relative;overflow:hidden;
+  animation:cardSlide 0.5s ease both;
+  display:flex;align-items:flex-start;gap:14px;
+}
+@keyframes cardSlide{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.t-card:hover{border-color:var(--green);box-shadow:var(--shadow);transform:translateY(-2px)}
+.t-card:active{transform:scale(0.97)}
+.t-card.wide{grid-column:1/-1}
+.t-icon{
+  width:50px;height:50px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;margin-bottom:0;
+}
+.t-icon svg{width:26px;height:26px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.t-card-body{flex:1;min-width:0;padding-right:28px}
+.t-name{font-family:'Playfair Display',serif;font-size:0.96rem;font-weight:700;color:var(--text);margin-bottom:5px;line-height:1.3}
+.t-desc{font-size:0.8rem;color:var(--text3);line-height:1.55}
+.t-arrow{position:absolute;top:50%;right:14px;transform:translateY(-50%);color:var(--text4);font-size:1rem;transition:all 0.2s}
+.t-card:hover .t-arrow{color:var(--green);transform:translateY(-50%) translateX(3px)}
+.t-save{
+  position:absolute;top:10px;right:36px;
+  background:transparent;border:none;cursor:pointer;
+  color:var(--text4);padding:2px;transition:color 0.2s;
+}
+.t-save:hover,.t-save.on{color:var(--gold)}
+.t-save svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6}
+.t-save.on svg{fill:var(--gold);stroke:var(--gold)}
+.t-card.wide .wide-row{display:flex;align-items:flex-start;gap:14px;width:100%}
+.t-card.wide .t-icon{margin-bottom:0;flex-shrink:0}
+
+/* Featured */
+.feat-wrap{padding:14px 16px 10px}
+.feat-card{
+  background:var(--green);border-radius:var(--radius-lg);
+  padding:20px;cursor:pointer;position:relative;overflow:hidden;
+  transition:all 0.25s ease;box-shadow:0 6px 24px rgba(27,107,74,0.2);
+}
+.feat-card:hover{background:var(--green-dark);transform:translateY(-2px)}
+.feat-card:active{transform:scale(0.98)}
+.feat-bg{position:absolute;right:-15px;top:-15px;width:120px;height:120px;opacity:0.08;pointer-events:none}
+.feat-tag{font-size:0.68rem;color:rgba(255,255,255,0.7);letter-spacing:0.14em;margin-bottom:8px;font-family:'Lato',sans-serif;font-weight:700}
+.feat-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:5px}
+.feat-desc{font-size:0.82rem;color:rgba(255,255,255,0.75);line-height:1.55}
+.feat-cta{margin-top:12px;display:flex;align-items:center;gap:7px;color:var(--gold-light);font-size:0.82rem;font-weight:700}
+.feat-cta svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ─── LIBRARY PAGE ─── */
+.lib-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 24px;text-align:center;
+}
+.lib-empty svg{width:60px;height:60px;stroke:var(--text4);fill:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;margin-bottom:14px}
+.lib-empty p{font-size:0.9rem;color:var(--text3);line-height:1.65;max-width:240px}
+.lib-item{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:12px 14px;display:flex;align-items:center;gap:12px;
+  margin-bottom:10px;animation:cardSlide 0.4s ease both;transition:all 0.2s;
+}
+.lib-item:hover{border-color:var(--green);box-shadow:var(--shadow)}
+.lib-item-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lib-item-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.lib-item-info{flex:1;min-width:0}
+.lib-item-name{font-family:'Playfair Display',serif;font-size:0.86rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.lib-item-cat{font-size:0.72rem;color:var(--text4)}
+.lib-rm{background:transparent;border:none;cursor:pointer;color:var(--text4);padding:4px;transition:color 0.2s}
+.lib-rm:hover{color:#D32F2F}
+.lib-rm svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* ─── UTILITIES PAGE ─── */
+.util-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px;display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:all 0.25s ease;margin-bottom:10px;
+  animation:cardSlide 0.5s ease both;
+}
+.util-card:hover{border-color:var(--green);box-shadow:var(--shadow);transform:translateY(-1px)}
+.util-card:active{transform:scale(0.97)}
+.util-icon{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.util-icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.util-info{flex:1;min-width:0}
+.util-name{font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.util-desc{font-size:0.74rem;color:var(--text3);line-height:1.4}
+.util-btn{
+  background:var(--green-pale);border:1px solid var(--border2);border-radius:8px;
+  padding:6px 12px;font-size:0.7rem;color:var(--green);cursor:pointer;
+  font-family:'Lato',sans-serif;font-weight:700;white-space:nowrap;transition:all 0.2s;flex-shrink:0;
+}
+.util-btn:hover{background:var(--green);color:#fff}
+
+/* ─── PROFILE PAGE ─── */
+.prof-hero{
+  background:var(--green-dark);padding:30px 22px 22px;
+  text-align:center;position:relative;overflow:hidden;flex-shrink:0;
+}
+.prof-hero-geo{position:absolute;inset:0;opacity:0.06;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='0.5'%3E%3Cpolygon points='40,3 74,21 74,59 40,77 6,59 6,21'/%3E%3Ccircle cx='40' cy='40' r='14'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:80px 80px;
+}
+.prof-av{
+  width:82px;height:82px;border-radius:50%;margin:0 auto 12px;
+  border:2.5px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;position:relative;z-index:1;
+}
+.prof-av svg{width:42px;height:42px;fill:none;stroke:#fff;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.prof-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:3px;position:relative;z-index:1}
+.prof-dept{font-size:0.82rem;color:var(--gold-light);margin-bottom:2px;position:relative;z-index:1}
+.prof-inst{font-size:0.76rem;color:rgba(255,255,255,0.6);margin-bottom:18px;position:relative;z-index:1}
+.prof-btns{display:flex;gap:10px;justify-content:center;position:relative;z-index:1}
+.p-btn{
+  padding:9px 20px;border-radius:10px;font-size:0.8rem;cursor:pointer;
+  font-family:'Lato',sans-serif;font-weight:700;letter-spacing:0.06em;transition:all 0.2s;border:none;
+}
+.p-btn-primary{background:#fff;color:var(--green)}
+.p-btn-primary:hover{background:rgba(255,255,255,0.9);transform:translateY(-1px)}
+.p-btn-outline{background:transparent;border:1.5px solid rgba(255,255,255,0.4);color:#fff}
+.p-btn-outline:hover{background:rgba(255,255,255,0.1);transform:translateY(-1px)}
+
+.info-blk{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:12px}
+.info-blk-hdr{padding:9px 14px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:0.66rem;letter-spacing:0.18em;color:var(--text4);font-family:'Lato',sans-serif;font-weight:700}
+.info-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);transition:background 0.15s;cursor:default}
+.info-row:last-child{border-bottom:none}
+.info-row.tap{cursor:pointer}
+.info-row.tap:hover{background:var(--green-pale)}
+.i-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.i-icon svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.i-lbl{font-size:0.68rem;color:var(--text4);margin-bottom:2px;letter-spacing:0.07em;font-family:'Lato',sans-serif;font-weight:700}
+.i-val{font-size:0.9rem;color:var(--text)}
+.i-val a{color:var(--green);text-decoration:none}
+.i-val a:hover{text-decoration:underline}
+
+/* ─── EDIT MODAL ─── */
+#edit-modal{
+  position:fixed;inset:0;z-index:350;background:rgba(26,46,34,0.6);
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.3s ease;
+}
+#edit-modal.show{opacity:1;pointer-events:all}
+.modal-sheet{
+  background:var(--bg2);border-radius:24px 24px 0 0;padding:20px 20px 32px;
+  width:100%;max-width:480px;
+  transform:translateY(40px);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+#edit-modal.show .modal-sheet{transform:none}
+.modal-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 18px}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:16px;text-align:center}
+.m-field{margin-bottom:12px}
+.m-label{display:block;font-size:0.68rem;color:var(--text4);letter-spacing:0.1em;margin-bottom:5px;font-family:'Lato',sans-serif;font-weight:700}
+.m-input{
+  width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+  padding:10px 13px;color:var(--text);font-size:0.9rem;font-family:'Lato',sans-serif;
+  outline:none;transition:border-color 0.2s;
+}
+.m-input:focus{border-color:var(--green)}
+.m-actions{display:flex;gap:10px;margin-top:16px}
+.m-save{flex:1;background:var(--green);color:#fff;border:none;border-radius:10px;padding:11px;cursor:pointer;font-family:'Lato',sans-serif;font-weight:700;font-size:0.88rem;transition:background 0.2s}
+.m-save:hover{background:var(--green-dark)}
+.m-cancel{flex:1;background:var(--bg3);color:var(--text3);border:1px solid var(--border);border-radius:10px;padding:11px;cursor:pointer;font-family:'Lato',sans-serif;font-size:0.88rem;transition:all 0.2s}
+.m-cancel:hover{border-color:var(--green);color:var(--green)}
+
+/* ─── HIDE THIRD-PARTY BANNERS (Base44, etc.) ─── */
+iframe[src*="base44"],div[class*="base44"],a[href*="base44"],
+div[style*="base44"],*[data-base44],
+div:has(>img[src*="base44"]),
+.base44-badge,.b44-edit-bar,
+div[class*="edit-bar"],div[id*="edit-bar"],
+div[class*="powered-by"],div[id*="powered-by"],
+a[href*="base44.app"],div[class*="badge"][class*="edit"],
+body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not(#edit-modal):not(#toast):not(#bg-tile){
+  display:none!important;visibility:hidden!important;opacity:0!important;
+  pointer-events:none!important;height:0!important;overflow:hidden!important;
+}
+
+/* ─── TOAST ─── */
+#toast{
+  position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-12px);
+  z-index:400;background:var(--green-dark);color:#fff;
+  border-radius:30px;padding:9px 20px;font-size:0.82rem;font-family:'Lato',sans-serif;
+  opacity:0;pointer-events:none;transition:all 0.35s ease;white-space:nowrap;
+  box-shadow:0 4px 18px rgba(27,107,74,0.3);
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ─── SHARED ─── */
+.pg-inner{padding:0 16px 20px;max-width:480px;margin:0 auto;width:100%}
+.pg-hero{padding:20px 18px 14px;max-width:480px;margin:0 auto;width:100%}
+.pg-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--green-pale);border:1px solid var(--border2);border-radius:20px;
+  padding:4px 12px;font-size:0.7rem;color:var(--green);margin-bottom:10px;
+  letter-spacing:0.08em;font-family:'Lato',sans-serif;font-weight:700;
+}
+.badge-pulse{width:6px;height:6px;border-radius:50%;background:var(--green);animation:bpulse 2s ease infinite}
+@keyframes bpulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.pg-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:6px}
+.pg-title em{color:var(--gold);font-style:normal}
+.pg-sub{font-size:0.86rem;color:var(--text3);line-height:1.65}
+.spacer{height:16px}
+.end-pad{height:20px}
+/* card delays */
+.t-card:nth-child(1){animation-delay:.00s}
+.t-card:nth-child(2){animation-delay:.06s}
+.t-card:nth-child(3){animation-delay:.12s}
+.t-card:nth-child(4){animation-delay:.18s}
+.t-card:nth-child(5){animation-delay:.24s}
+.t-card:nth-child(6){animation-delay:.30s}
+.t-card:nth-child(7){animation-delay:.36s}
+.t-card:nth-child(8){animation-delay:.42s}
+.t-card:nth-child(9){animation-delay:.48s}
+.t-card:nth-child(10){animation-delay:.54s}
+.t-card:nth-child(11){animation-delay:.60s}
+.t-card:nth-child(12){animation-delay:.66s}
+.util-card:nth-child(1){animation-delay:.00s}
+.util-card:nth-child(2){animation-delay:.07s}
+.util-card:nth-child(3){animation-delay:.14s}
+.util-card:nth-child(4){animation-delay:.21s}
+.util-card:nth-child(5){animation-delay:.28s}
+.util-card:nth-child(6){animation-delay:.35s}
+
+/* ─── PWA INSTALL BANNER — exactly like SM Prayer Times ─── */
+#pwa-banner{
+  position:fixed;top:0;left:0;right:0;z-index:600;
+  background:#1a56a0;
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;
+  transform:translateY(-110%);
+  transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:0 2px 12px rgba(0,0,0,0.25);
+}
+#pwa-banner.show{transform:translateY(0)}
+.pwa-icon{
+  width:44px;height:44px;background:rgba(255,255,255,0.18);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:1.4rem;
+}
+.pwa-text{flex:1;min-width:0}
+.pwa-title{font-family:'Lato',sans-serif;font-weight:700;font-size:0.86rem;color:#fff;line-height:1.2}
+.pwa-sub{font-size:0.7rem;color:rgba(255,255,255,0.72);margin-top:2px}
+.pwa-install{
+  background:#fff;color:#1a56a0;border:none;border-radius:6px;
+  padding:8px 16px;font-size:0.82rem;font-family:'Lato',sans-serif;font-weight:700;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
+}
+.pwa-close{
+  background:transparent;border:none;color:rgba(255,255,255,0.8);
+  cursor:pointer;padding:4px 6px;font-size:1.1rem;line-height:1;flex-shrink:0;
+}
+
+/* ─── NEW PROFILE CARD ─── */
+.profile-main-card{
+  background:linear-gradient(160deg,var(--green-dark) 0%,#1E7A54 60%,#2A9068 100%);
+  border-radius:22px;padding:28px 20px 20px;
+  position:relative;overflow:hidden;
+  box-shadow:0 8px 32px rgba(27,107,74,0.22);
+}
+.prof-card-geo{
+  position:absolute;right:-20px;bottom:-20px;
+  width:160px;height:160px;opacity:0.07;pointer-events:none;
+}
+.prof-av-wrap{
+  width:88px;height:88px;margin:0 auto 16px;position:relative;
+}
+.prof-av-ring{
+  position:absolute;inset:-3px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,0.35);
+}
+.prof-av-inner{
+  width:88px;height:88px;border-radius:50%;
+  background:rgba(255,255,255,0.12);
+  display:flex;align-items:center;justify-content:center;
+}
+.prof-av-inner svg{width:42px;height:42px;fill:none;stroke:rgba(255,255,255,0.9);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.prof-card-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff;text-align:center;margin-bottom:5px}
+.prof-card-dept{font-size:0.8rem;color:var(--gold-light);text-align:center;margin-bottom:2px;font-weight:400}
+.prof-card-inst{font-size:0.74rem;color:rgba(255,255,255,0.55);text-align:center;margin-bottom:14px}
+.prof-ver-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(255,255,255,0.12);border-radius:20px;
+  padding:3px 12px;font-size:0.65rem;color:rgba(255,255,255,0.8);
+  font-family:'Lato',sans-serif;font-weight:700;letter-spacing:0.1em;
+  margin-bottom:16px;
+}
+.prof-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px}
+.prof-contact-row{
+  width:100%;display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,0.1);border:none;border-radius:12px;
+  padding:12px 14px;margin-bottom:8px;
+  cursor:pointer;transition:background 0.2s;text-align:left;
+}
+.prof-contact-row:last-of-type{margin-bottom:0}
+.prof-contact-row:hover{background:rgba(255,255,255,0.18)}
+.prof-contact-icon{
+  width:34px;height:34px;background:rgba(255,255,255,0.15);border-radius:9px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.prof-contact-icon svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.prof-contact-info{flex:1;min-width:0}
+.prof-contact-lbl{font-size:0.62rem;color:rgba(255,255,255,0.55);font-family:'Lato',sans-serif;font-weight:700;letter-spacing:0.1em;margin-bottom:2px}
+.prof-contact-val{font-size:0.9rem;color:#fff;font-family:'Lato',sans-serif}
+.prof-contact-arr{width:16px;height:16px;fill:none;stroke:rgba(255,255,255,0.4);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.prof-copy{text-align:center;padding:10px 0 4px;font-size:0.68rem;color:var(--text4);font-family:'Lato',sans-serif}
+</style>
+</head>
+<body>
+
+<div id="bg-tile"></div>
+<div id="toast"></div>
+
+<!-- ═══════════════ PWA INSTALL BANNER ═══════════════ -->
+<div id="pwa-banner">
+  <div class="pwa-icon">📖</div>
+  <div class="pwa-text">
+    <div class="pwa-title">Install Al-Turath AI</div>
+    <div class="pwa-sub">Add to Home Screen</div>
+  </div>
+  <button class="pwa-install" id="pwa-install-btn">Install</button>
+  <button class="pwa-close" onclick="closePwaBanner()">✕</button>
+</div>
+
+<!-- ═══════════════ SPLASH ═══════════════ -->
+<div id="splash" onclick="skipSplash()">
+  <!-- Islamic arch logo SVG (matching image 1) -->
+  <svg class="splash-logo-img" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gld" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#E8C97A"/>
+        <stop offset="100%" stop-color="#C49A2A"/>
+      </linearGradient>
+    </defs>
+    <g fill="url(#gld)">
+      <!-- Arch frame outer -->
+      <path d="M30,210 L30,90 Q30,20 100,20 Q170,20 170,90 L170,210 L150,210 L150,95 Q150,42 100,42 Q50,42 50,95 L50,210 Z"/>
+      <!-- Inner lattice horizontals -->
+      <rect x="50" y="115" width="100" height="5" rx="2"/>
+      <rect x="50" y="140" width="100" height="5" rx="2"/>
+      <rect x="50" y="165" width="100" height="5" rx="2"/>
+      <!-- Inner lattice verticals -->
+      <rect x="72" y="90" width="5" height="120" rx="2"/>
+      <rect x="95" y="90" width="5" height="120" rx="2"/>
+      <rect x="118" y="90" width="5" height="120" rx="2"/>
+      <!-- Crescent -->
+      <path d="M80,58 Q100,38 120,58 Q108,46 92,58 Q110,65 120,58 Q100,78 80,58Z" opacity="0.95"/>
+      <!-- Star of 6 inside -->
+      <polygon points="100,75 103,82 110,82 104,87 107,94 100,90 93,94 96,87 90,82 97,82" opacity="0.9"/>
+      <!-- Bottom flower -->
+      <polygon points="100,195 104,185 100,175 96,185" opacity="0.8"/>
+      <polygon points="100,195 110,191 115,182 105,186" opacity="0.8"/>
+      <polygon points="100,195 90,191 85,182 95,186" opacity="0.8"/>
+      <polygon points="100,195 112,198 118,188 107,193" opacity="0.8"/>
+      <polygon points="100,195 88,198 82,188 93,193" opacity="0.8"/>
+    </g>
+  </svg>
+  <div class="splash-title">Al-Turath <span>AI</span></div>
+  <div class="splash-sub">BRIDGING TRADITION WITH INNOVATION</div>
+  <div class="splash-bar-wrap"><div class="splash-bar"></div></div>
+</div>
+
+<!-- ═══════════════ TRANSITION (LAUNCH) SCREEN — hidden in direct mode ═══════════════ -->
+<div id="trans" style="display:none">
+  <div class="trans-bg"></div>
+  <div class="trans-pattern"></div>
+  <div class="trans-inner">
+    <div class="trans-icon-box">
+      <svg id="trans-icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    </div>
+    <div class="trans-name" id="trans-name">Insight Quranic Studies</div>
+    <div class="trans-arabic" id="trans-arabic">دراسات قرآنية</div>
+    <div class="trans-progress-wrap"><div class="trans-progress" id="trans-bar"></div></div>
+    <div class="trans-status"><div class="trans-spin"></div><span>Launching AI Tool...</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════ TOOL DETAIL PAGE ═══════════════ -->
+<div id="tool-detail">
+  <div class="detail-topbar">
+    <button class="detail-back" onclick="closeDetail()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Back
+    </button>
+    <div class="detail-dot"></div>
+    <div class="detail-open" onclick="openDetailUrl()">
+      <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </div>
+  </div>
+  <div class="detail-body">
+    <div class="detail-icon" id="det-icon" style="background:var(--green)">
+      <svg id="det-icon-svg" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    </div>
+    <div class="detail-name" id="det-name">Insight Quranic Studies</div>
+    <div class="detail-arabic" id="det-arabic">دراسات قرآنية</div>
+    <div class="detail-desc" id="det-desc" style="font-size:0.9rem;color:var(--text3);line-height:1.7;margin-bottom:22px;max-width:340px;text-align:center"></div>
+    <button class="detail-launch" id="det-launch-btn" onclick="launchFromDetail()">
+      <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span id="det-btn-lbl">Launch AI Scholar</span>
+    </button>
+    <div class="detail-urdu" id="det-urdu">تفسیر، علوم القرآن، قراءات اور مفسرین کے مناہج — قرآن کریم کا گہرا تحقیقی مطالعہ</div>
+  </div>
+</div>
+
+<!-- ═══════════════ MAIN APP ═══════════════ -->
+<div id="app" class="hidden">
+  <div class="app-hdr">
+    <div class="hdr-left">
+      <div class="hdr-logo-box">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </div>
+      <div>
+        <div class="hdr-name">Al-Turath <span>AI</span></div>
+        <div class="hdr-tag">BRIDGING TRADITION WITH INNOVATION</div>
+      </div>
+    </div>
+    <button class="hdr-btn" onclick="focusSearch()" aria-label="Search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </button>
+  </div>
+
+  <div class="page-wrap">
+
+    <!-- HOME PAGE -->
+    <div class="page active" id="page-home">
+      <!-- Hero -->
+      <div class="home-hero">
+        <!-- Compass logo like image 2 -->
+        <svg class="hero-compass" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="30" fill="none" stroke="#1B6B4A" stroke-width="1.5"/>
+          <circle cx="32" cy="32" r="24" fill="none" stroke="#C49A2A" stroke-width="0.8" opacity="0.5"/>
+          <line x1="32" y1="4" x2="32" y2="60" stroke="#C49A2A" stroke-width="0.6" opacity="0.4"/>
+          <line x1="4" y1="32" x2="60" y2="32" stroke="#C49A2A" stroke-width="0.6" opacity="0.4"/>
+          <polygon points="32,10 34,29 32,32 30,29" fill="#1B6B4A"/>
+          <polygon points="32,54 34,35 32,32 30,35" fill="#C49A2A" opacity="0.6"/>
+          <polygon points="10,32 29,30 32,32 29,34" fill="#1B6B4A" opacity="0.6"/>
+          <polygon points="54,32 35,30 32,32 35,34" fill="#C49A2A" opacity="0.8"/>
+          <circle cx="32" cy="32" r="4" fill="#C49A2A"/>
+          <circle cx="32" cy="32" r="2" fill="#1B6B4A"/>
+        </svg>
+        <div class="hero-title">Al-Turath <span>AI</span></div>
+        <div class="hero-slogan">BRIDGING TRADITION WITH INNOVATION</div>
+        <div class="hero-p">An advanced AI-powered platform for deep research and scholarly exploration across Islamic Sciences — from Quranic Studies to Hadith, Fiqh, and beyond.</div>
+        <div class="hero-scroll"><div class="scroll-ball"></div></div>
+      </div>
+
+      <div class="section-row"><div class="sec-line"></div><div class="sec-lbl">AI RESEARCH SYSTEMS</div><div class="sec-line"></div></div>
+      <div style="text-align:center;padding:0 18px 16px">
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:4px">Explore Islamic Sciences</div>
+        <div style="font-size:0.85rem;color:var(--text3)">Select an AI-powered research system to begin your scholarly journey</div>
+      </div>
+
+      <!-- TOOL CARDS -->
+      <div class="cards-grid" id="cards-grid">
+
+        <!-- 1. Quranic Studies -->
+        <div class="t-card" onclick="openDetail('Insight Quranic Studies AI','دراسات قرآنية','A focused AI system centered on the Qur\'an as the primary source, integrating the study of Qira\'at, Uloom al-Qur\'an, and Tafsir, along with the analytical methodologies of classical and contemporary scholars. It provides research-based insights and intellectually engaging reflections.','تفسیرِ قرآن، علوم القرآن، قراءات اور مفسرین کے مناہج واسالیب','https://gemini.google.com/gem/1qptTw7IQ4z722a54VAnylwba7A2bX_gh?usp=sharing','quran')">
+          <button class="t-save" id="sv-quran" onclick="toggleSave(event,'Insight Quranic Studies AI','quran')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#E8F5EE"><svg style="stroke:#1B6B4A" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Quranic Studies AI</div>
+            <div class="t-desc">Centered on the Qur'an as the primary source — Qira'at, Uloom al-Qur'an, Tafsir &amp; methodologies of classical and contemporary scholars.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 2. Hadith Studies -->
+        <div class="t-card" onclick="openDetail('Insight Hadith Studies AI','دراسات حديثية','A focused AI system grounded in the study of Hadith as the core source, encompassing Uloom al-Hadith, Sharh al-Hadith, and the methodologies of the Muhaddithin. It offers critical, research-based insights and thought-provoking scholarly analysis.','متنِ حدیث، شرح الحدیث، علوم الحدیث اور محدثین کے مناہج واسالیب','https://gemini.google.com/gem/19WGu7XwaNBokK6HJPFha105V2chLZ2CF?usp=sharing','hadith')">
+          <button class="t-save" id="sv-hadith" onclick="toggleSave(event,'Insight Hadith Studies AI','hadith')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#E3F4F0"><svg style="stroke:#1B6B4A" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Hadith Studies AI</div>
+            <div class="t-desc">Grounded in Hadith as the core source — Uloom al-Hadith, Sharh al-Hadith &amp; methodologies of the Muhaddithin, with critical scholarly analysis.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 3. Seerah Quest -->
+        <div class="t-card" onclick="openDetail('Insight Seerah-Quest','السيرة النبوية','A focused AI system dedicated to the study of the Seerah of the Prophet \u0635, emphasizing event-based analysis, Fiqh al-Seerah, and the methodologies and literary styles of Seerah scholars. It delivers structured, research-oriented insights.','سیرت النبی ﷺ، فقہ السیرۃ اور نامور سیرت نگاروں کے مناہج واسالیب','https://gemini.google.com/gem/1eLUI5h-oRNxb8xmFSf0BXjEqTDbULeIH?usp=sharing','seerah')">
+          <button class="t-save" id="sv-seerah" onclick="toggleSave(event,'Insight Seerah-Quest','seerah')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#F3EEF9"><svg style="stroke:#7B3FA0" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Seerah-Quest</div>
+            <div class="t-desc">Dedicated to the Seerah of the Prophet ﷺ — event-based analysis, Fiqh al-Seerah &amp; the methodologies of Seerah scholars.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 4. Islamic Fiqh -->
+        <div class="t-card" onclick="openDetail('Insight Islamic Fiqh AI','الفقه الإسلامي','A focused AI system presenting Islamic jurisprudence through both its foundational principles and applied dimensions, rooted in Usul al-Fiqh, and addressing classical and contemporary legal concerns with scholarly depth and clarity.','فقہی مسائل (قدیم وجدید)، اصولِ فقہ، مقاصدِ شریعت اور فقہاء کے مناہج واسالیب','https://gemini.google.com/gem/1UFc8IxAgOJ73vxXziJbsaPO_tUwlasPn?usp=sharing','fiqh')">
+          <button class="t-save" id="sv-fiqh" onclick="toggleSave(event,'Insight Islamic Fiqh AI','fiqh')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#EBF2FD"><svg style="stroke:#1565C0" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Islamic Fiqh AI</div>
+            <div class="t-desc">Islamic jurisprudence through foundational principles and applied dimensions — Usul al-Fiqh, classical &amp; contemporary legal concerns.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 5. Atheism Critique -->
+        <div class="t-card" onclick="openDetail('Insight Atheism Critique AI','نقدِ الحاد','A focused AI system that critically examines atheism, modern skepticism, and contemporary ideologies, offering a well-reasoned, scholarly, and intellectual defense of Islamic belief.','الحاد، جدید شکوک وشبہات اور معاصر نظریاتی چیلنجز کے علمی وعقلی جوابات','https://gemini.google.com/gem/1rBvefCKzFY9pB-WgWg2E5cl-mQW1QyNi?usp=sharing','atheism')">
+          <button class="t-save" id="sv-atheism" onclick="toggleSave(event,'Insight Atheism Critique AI','atheism')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#FEF0E8">
+            <svg style="stroke:#D4500A" viewBox="0 0 24 24">
+              <line x1="12" y1="3" x2="12" y2="21"/><path d="M5 21h14"/>
+              <circle cx="6" cy="14" r="3"/><circle cx="18" cy="14" r="3"/>
+              <line x1="3" y1="10" x2="9" y2="10"/><line x1="15" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Atheism Critique AI</div>
+            <div class="t-desc">Critically examines atheism, modern skepticism &amp; contemporary ideologies — offering a well-reasoned, scholarly defense of Islamic belief.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 6. Signs & Trials -->
+        <div class="t-card" onclick="openDetail('Insight Signs &amp; Trials AI','ظہورِ فتن اور علاماتِ قیامت','A focused AI system that explores the signs of the Day of Judgment, the emergence of Dajjal, and the major trials of the end times, grounded in the Qur\'an and Hadith, providing both analytical insight and practical guidance.','دجال، علامات قیامت اور آخری زمانے کے فتنوں کا قرآن و حدیث کی روشنی میں تجزیہ','https://gemini.google.com/gem/1ix6bFjJ6eD5V-1l4R-WZYu17x9937SCw?usp=sharing','signs')">
+          <button class="t-save" id="sv-signs" onclick="toggleSave(event,'Insight Signs &amp; Trials AI','signs')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#FEFBE8">
+            <svg style="stroke:#B8860B" viewBox="0 0 24 24">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>
+              <path d="M19 3l.5 1.5L21 5l-1.5.5L19 7l-.5-1.5L17 5l1.5-.5z"/>
+            </svg>
+          </div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Signs &amp; Trials AI</div>
+            <div class="t-desc">Explores signs of the Day of Judgment, the Dajjal &amp; major end-time trials — grounded in Qur'an &amp; Hadith with analytical and practical guidance.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 7. Orientalism -->
+        <div class="t-card" onclick="openDetail('Insight Orientalism AI','نقدِ استشراق','A focused AI system dedicated to the critical study of Orientalism and the methodologies of Orientalists, offering research-based analysis and scholarly responses to their objections concerning the Qur\'an, Hadith, Fiqh, and Arabic language and literature.','مباحثِ استشراق اور مستشرقین کے اعتراضات کا علمی رد','https://gemini.google.com/gem/1afefPdkkuQ9YMSAJPTs_07-PTnBkGvow?usp=sharing','orient')">
+          <button class="t-save" id="sv-orient" onclick="toggleSave(event,'Insight Orientalism AI','orient')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#E0F4F1"><svg style="stroke:#00695C" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Orientalism AI</div>
+            <div class="t-desc">Critical study of Orientalism &amp; Orientalist methodologies — scholarly responses to objections on the Qur'an, Hadith, Fiqh &amp; Arabic literature.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 8. Fiqh al-Halal -->
+        <div class="t-card" onclick="openDetail('Insight Fiqh al-Halal &amp; Its Standards','فقه الحلال والمعايير','A focused AI System for scholarly analysis of Fiqh al-Halal, Nutrition Standards, and Compliance with International &amp; National Halal Food Regulations.','فقہ الحلال، غذائی معیارات اور بین الاقوامی وقومی حلال فوڈ ضوابط کا علمی تجزیہ','https://gemini.google.com/gem/4445b3dbdee0','halal')">
+          <button class="t-save" id="sv-halal" onclick="toggleSave(event,'Insight Fiqh al-Halal &amp; Its Standards','halal')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#E8F5EE"><svg style="stroke:#2E7D32" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Fiqh al-Halal &amp; Its Standards</div>
+            <div class="t-desc">Scholarly analysis of Fiqh al-Halal, Nutrition Standards &amp; compliance with International &amp; National Halal Food Regulations.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 9. Islamic History -->
+        <div class="t-card" onclick="openDetail('Insight History-Quest','التاريخ الإسلامي','A focused AI System for scholarly analysis of Islamic History, spanning from the Rashidun Caliphate to the Umayyads, Abbasids, Muslim Spain, Ottoman Empire, and the Indian Subcontinent.','خلافتِ راشدہ سے عثمانی سلطنت اور برصغیر تک — اسلامی تاریخ کا علمی وتحقیقی مطالعہ','https://gemini.google.com/gem/1k-UkWlbuCAN8ZM454gLOEyWa8_BXGvcy?usp=sharing','history')">
+          <button class="t-save" id="sv-history" onclick="toggleSave(event,'Insight History-Quest','history')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#FFF8E1"><svg style="stroke:#F57F17" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight History-Quest</div>
+            <div class="t-desc">Islamic History from Rashidun Caliphate to the Umayyads, Abbasids, Muslim Spain, Ottoman Empire &amp; the Indian Subcontinent.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 10. Ilm ul-Kalam & Philosophy -->
+        <div class="t-card" onclick="openDetail('Insight Ilm-ul-Kalam &amp; Philosophy AI','علم الكلام والفلسفة','A focused AI System for scholarly analysis of theological and philosophical discourse, examining arguments, methodologies, and intellectual traditions across classical and modern thought.','علمِ کلام اور فلسفہ — کلاسیکی ومعاصر فکری روایات اور دلائل کا علمی جائزہ','https://gemini.google.com/gem/1kapu_mPR4DM8vhI9agfbJVNDQkpBXlkr?usp=sharing','kalam')">
+          <button class="t-save" id="sv-kalam" onclick="toggleSave(event,'Insight Ilm-ul-Kalam &amp; Philosophy AI','kalam')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#EDE7F6"><svg style="stroke:#512DA8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Ilm-ul-Kalam &amp; Philosophy AI</div>
+            <div class="t-desc">Theological &amp; philosophical discourse — examining arguments, methodologies &amp; intellectual traditions across classical and modern thought.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 11. Religion Quest -->
+        <div class="t-card" onclick="openDetail('Insight Religion-Quest','دراسات الأديان','A focused AI System for scholarly and research-based analysis of world religions, examining beliefs, scriptures, doctrines, and historical development across classical and modern contexts.','عالمی ادیان کا تقابلی مطالعہ — عقائد، متون، عقائد اور تاریخی ارتقاء کا علمی تجزیہ','https://gemini.google.com/gem/1qxvAZ2CJOz34hnN1WEjmNHP0wswVzxcB?usp=sharing','religion')">
+          <button class="t-save" id="sv-religion" onclick="toggleSave(event,'Insight Religion-Quest','religion')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#FCE4EC"><svg style="stroke:#C62828" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Religion-Quest</div>
+            <div class="t-desc">Scholarly analysis of world religions — beliefs, scriptures, doctrines &amp; historical development across classical and modern contexts.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+        <!-- 12. Tasawwuf Studies -->
+        <div class="t-card" onclick="openDetail('Insight Tasawwuf Studies','دراسات التصوف','A focused AI System for rigorous scholarly analysis of Tasawwuf, examining its doctrines, methods, texts, and development across classical and modern contexts.','تصوف کے عقائد، طریقے، متون اور کلاسیکی وجدید سیاق میں ارتقاء کا علمی تجزیہ','https://gemini.google.com/gem/1x42tOT2MCv6aAFlpPlhf40TgELKHiyNL?usp=sharing','tasawwuf')">
+          <button class="t-save" id="sv-tasawwuf" onclick="toggleSave(event,'Insight Tasawwuf Studies','tasawwuf')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <div class="t-icon" style="background:#F3E5F5"><svg style="stroke:#6A1B9A" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="t-card-body">
+            <div class="t-name">Insight Tasawwuf Studies</div>
+            <div class="t-desc">Rigorous scholarly analysis of Tasawwuf — its doctrines, methods, texts, and development across classical and modern contexts.</div>
+          </div>
+          <div class="t-arrow">›</div>
+        </div>
+
+      </div>
+
+      <!-- Featured Card -->
+      <div class="feat-wrap">
+        <div class="feat-card" onclick="openDetail('Insight Quranic Studies AI','دراسات قرآنية','A focused AI system centered on the Qur\'an as the primary source, integrating the study of Qira\'at, Uloom al-Qur\'an, and Tafsir, along with the analytical methodologies of classical and contemporary scholars. It provides research-based insights and intellectually engaging reflections.','تفسیرِ قرآن، علوم القرآن، قراءات اور مفسرین کے مناہج واسالیب','https://gemini.google.com/gem/1qptTw7IQ4z722a54VAnylwba7A2bX_gh?usp=sharing','quran')">
+          <svg class="feat-bg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#fff" stroke-width="0.8"><polygon points="60,4 114,32 114,88 60,116 6,88 6,32"/><circle cx="60" cy="60" r="30"/></g></svg>
+          <div class="feat-tag">✦ START HERE</div>
+          <div class="feat-title">Begin Your Scholarly Journey</div>
+          <div class="feat-desc">Dive deep into Quranic sciences with centuries of Islamic thought, powered by advanced AI research tools.</div>
+          <div class="feat-cta"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Open Quranic Studies AI</div>
+        </div>
+      </div>
+      <div class="end-pad"></div>
+    </div>
+
+    <!-- LIBRARY PAGE -->
+    <div class="page" id="page-library">
+      <div class="pg-hero">
+        <div class="pg-badge"><div class="badge-pulse"></div>Your Personal Collection</div>
+        <div class="pg-title">Saved <em>Library</em></div>
+        <div class="pg-sub">Your bookmarked AI scholars and tools, accessible anytime.</div>
+      </div>
+      <div class="pg-inner"><div id="lib-content"></div></div>
+      <div class="end-pad"></div>
+    </div>
+
+    <!-- UTILITIES PAGE -->
+    <div class="page" id="page-utils">
+      <div class="pg-hero">
+        <div class="pg-badge"><div class="badge-pulse"></div>Islamic Digital Tools</div>
+        <div class="pg-title">Islamic <em>Utilities</em></div>
+        <div class="pg-sub">Essential apps for daily Islamic practice and scholarly reference.</div>
+      </div>
+      <div class="pg-inner">
+        <div class="section-row" style="padding-left:0;padding-right:0"><div class="sec-line"></div><div class="sec-lbl">FEATURED APPS</div><div class="sec-line"></div></div>
+
+        <div class="util-card" onclick="launchUtil('SM Prayer Times','Loading Prayer Times...','https://sajidzbi.github.io/SM-Prayer-Times')">
+          <div class="util-icon" style="background:#E8F5EE"><svg style="stroke:#1B6B4A" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="util-info"><div class="util-name">SM Prayer Times</div><div class="util-desc">Accurate Salah timings with multiple calculation methods, Qibla direction, and Converter of Hijri &amp; Gregorian dates.</div></div>
+          <div class="util-btn">Open</div>
+        </div>
+
+        <div class="util-card" onclick="launchUtil('Mirath Calculator','Launching Islamic inheritance calculator...','https://www.mirath.net/')">
+          <div class="util-icon" style="background:#EBF2FD"><svg style="stroke:#1565C0" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <div class="util-info"><div class="util-name">Mirath Calculator</div><div class="util-desc">Shariah-compliant Islamic inheritance distribution with detailed breakdown</div></div>
+          <div class="util-btn">Open</div>
+        </div>
+
+        <div class="util-card" onclick="launchUtil('SM Shariah Scales Conerter','Opening SM Shariah Scales Conerter...','https://sajidzbi.github.io/Shariah-Scales-Converter/')">
+          <div class="util-icon" style="background:#FEF0E8"><svg style="stroke:#D4500A" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div class="util-info"><div class="util-name">SM Shariah Scales Conerter</div><div class="util-desc">Weight, Capacity &amp; Measurement conversions using classical Islamic units — Dinar, Dirham, Saa, Mudd, Bareed, Farsakh &amp; more.</div></div>
+          <div class="util-btn">Open</div>
+        </div>
+
+        <div class="util-card" onclick="launchUtil('Al-Mushaf Digital','Opening digital Quran...','https://quran.com/')">
+          <div class="util-icon" style="background:#F3EEF9"><svg style="stroke:#7B3FA0" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <div class="util-info"><div class="util-name">Al-Mushaf Digital</div><div class="util-desc">Complete Quran with translation, transliteration, audio recitations &amp; Tafseer</div></div>
+          <div class="util-btn">Open</div>
+        </div>
+
+        <div class="util-card" onclick="launchUtil('SM Zakat Calculator','Opening SM Zakat Calculator...','https://sajidzbi.github.io/SM-Zakat-Calculator/')">
+          <div class="util-icon" style="background:#FEFBE8"><svg style="stroke:#B8860B" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div class="util-info"><div class="util-name">SM Zakat Calculator</div><div class="util-desc">Calculate your annual Zakat accurately in accordance with authentic Islamic principles.</div></div>
+          <div class="util-btn">Open</div>
+        </div>
+
+        <div class="util-card" onclick="launchUtil('Asma ul-Husna','Opening 99 Names of Allah...','https://myislam.org/99-names-of-allah/')">
+          <div class="util-icon" style="background:#E0F4F1"><svg style="stroke:#00695C" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="util-info"><div class="util-name">Asma ul-Husna</div><div class="util-desc">The 99 Beautiful Names of Allah with meanings, transliterations &amp; virtues</div></div>
+          <div class="util-btn">Open</div>
+        </div>
+
+      </div>
+      <div class="end-pad"></div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div class="page" id="page-profile">
+      <div class="pg-inner" style="padding-top:18px">
+
+        <!-- Single Profile Card — clean design -->
+        <div class="profile-main-card">
+          <svg class="prof-card-geo" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#fff" stroke-width="0.5">
+              <polygon points="80,3 153,41 153,119 80,157 7,119 7,41"/>
+              <polygon points="80,22 132,51 132,109 80,138 28,109 28,51"/>
+              <circle cx="80" cy="80" r="32"/>
+            </g>
+          </svg>
+          <!-- Avatar -->
+          <div class="prof-av-wrap">
+            <div class="prof-av-ring"></div>
+            <div class="prof-av-inner">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+          </div>
+          <!-- Name & Info -->
+          <div class="prof-card-name">Dr. Sajid Mahmood</div>
+          <div class="prof-card-dept">Dept. of Islamic &amp; Religious Studies</div>
+          <div class="prof-card-inst">Hazara University, Mansehra</div>
+          <!-- Version badge -->
+          <div class="prof-ver-badge">✦ Al-Turath AI — v3.0</div>
+          <!-- Divider -->
+          <div class="prof-divider"></div>
+          <!-- Contact rows -->
+          <button class="prof-contact-row" onclick="doWhatsApp()">
+            <div class="prof-contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.09h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 5.72 5.72l.94-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.07 16a2 2 0 0 1 .93.92z"/></svg>
+            </div>
+            <div class="prof-contact-info">
+              <div class="prof-contact-lbl">WHATSAPP</div>
+              <div class="prof-contact-val">03009080730</div>
+            </div>
+            <svg class="prof-contact-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button class="prof-contact-row" onclick="doEmail()">
+            <div class="prof-contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="prof-contact-info">
+              <div class="prof-contact-lbl">EMAIL</div>
+              <div class="prof-contact-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ea998b80838e908883aa8d878b8386c4898587">[email&#160;protected]</a></div>
+            </div>
+            <svg class="prof-contact-arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+
+        <div class="prof-copy">© 2025 Al-Turath AI · Developed by Dr. Sajid Mahmood</div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+
+  </div><!-- end page-wrap -->
+
+  <!-- Bottom Nav -->
+  <nav class="bot-nav">
+    <button class="nav-btn active" id="nb-home" onclick="goPage('home')">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>HOME</span><div class="nav-dot"></div>
+    </button>
+    <button class="nav-btn" id="nb-library" onclick="goPage('library')">
+      <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <span>LIBRARY</span><div class="nav-dot"></div>
+    </button>
+    <button class="nav-btn" id="nb-utils" onclick="goPage('utils')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M6.34 17.66l-1.41 1.41M20 12h-2M6 12H4M17.66 17.66l-1.41-1.41M6.34 6.34L4.93 4.93M12 18v2M12 4V2"/></svg>
+      <span>TOOLS</span><div class="nav-dot"></div>
+    </button>
+    <button class="nav-btn" id="nb-profile" onclick="goPage('profile')">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>PROFILE</span><div class="nav-dot"></div>
+    </button>
+  </nav>
+</div><!-- end app -->
+
+<!-- EDIT MODAL -->
+<div id="edit-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Edit Profile</div>
+    <div class="m-field"><label class="m-label">FULL NAME</label><input class="m-input" id="ei-name" type="text"></div>
+    <div class="m-field"><label class="m-label">DEPARTMENT</label><input class="m-input" id="ei-dept" type="text"></div>
+    <div class="m-field"><label class="m-label">INSTITUTION</label><input class="m-input" id="ei-inst" type="text"></div>
+    <div class="m-field"><label class="m-label">WHATSAPP</label><input class="m-input" id="ei-wa" type="tel"></div>
+    <div class="m-field"><label class="m-label">EMAIL</label><input class="m-input" id="ei-email" type="email"></div>
+    <div class="m-actions">
+      <button class="m-cancel" onclick="closeEdit()">Cancel</button>
+      <button class="m-save" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── PROFILE DATA ── */
+var P = {
+  name:'Dr. Sajid Mahmood', dept:'Dept. of Islamic & Religious Studies',
+  inst:'Hazara University, Mansehra', wa:'03009080730', email:'sajidzbi@gmail.com'
+};
+var saved = {};
+var curPage = 'home';
+var detailUrl = '';
+var pwaPrompt = null;
+
+function showPwaBanner(){
+  if(sessionStorage.getItem('pwa-dismissed')) return;
+  var b = document.getElementById('pwa-banner');
+  if(b) b.classList.add('show');
+}
+function closePwaBanner(){
+  var b = document.getElementById('pwa-banner');
+  if(b) b.classList.remove('show');
+  sessionStorage.setItem('pwa-dismissed','1');
+}
+
+function skipSplash(){
+  var s = document.getElementById('splash');
+  var app = document.getElementById('app');
+  app.classList.remove('hidden');
+  app.style.visibility = 'visible';
+  app.style.pointerEvents = 'all';
+  renderLib();
+  s.style.transition = 'opacity 0.5s ease';
+  s.style.opacity = '0';
+  s.style.pointerEvents = 'none';
+  setTimeout(function(){ s.style.display = 'none'; showPwaBanner(); }, 520);
+}
+
+/* ── SPLASH ── */
+function initApp(){
+  var s = document.getElementById('splash');
+  var app = document.getElementById('app');
+  // Show app immediately behind splash
+  app.classList.remove('hidden');
+  app.style.visibility = 'visible';
+  app.style.pointerEvents = 'all';
+  renderLib();
+  // Animate splash out
+  setTimeout(function(){
+    s.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+    s.style.opacity = '0';
+    s.style.transform = 'scale(1.04)';
+    s.style.pointerEvents = 'none';
+    setTimeout(function(){
+      s.style.display = 'none';
+      showPwaBanner();
+    }, 850);
+  }, 3000);
+}
+// Try load event, fallback to DOMContentLoaded, fallback to immediate
+if(document.readyState === 'complete'){
+  setTimeout(initApp, 100);
+} else {
+  window.addEventListener('load', initApp);
+  // Safety fallback — if load never fires
+  document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(function(){
+      if(document.getElementById('app').classList.contains('hidden')){
+        initApp();
+      }
+    }, 3500);
+  });
+}
+
+/* ── PAGE NAV ── */
+var pageOrder = ['home','library','utils','profile'];
+function goPage(pg){
+  if(pg===curPage) return;
+  var pi = pageOrder.indexOf(curPage), ni = pageOrder.indexOf(pg);
+  var dir = ni > pi ? 1 : -1;
+  var pEl = document.getElementById('page-'+curPage);
+  var nEl = document.getElementById('page-'+pg);
+  pEl.classList.remove('active');
+  if(dir>0){ pEl.classList.add('out-left'); }
+  else { pEl.style.transform='translateX(80%)'; pEl.style.opacity='0'; }
+  nEl.style.cssText = 'transform:translateX('+(dir>0?'100%':'-80%')+');opacity:0;transition:none';
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      nEl.style.cssText = '';
+      nEl.classList.add('active');
+    });
+  });
+  setTimeout(function(){ pEl.classList.remove('out-left'); pEl.style.transform=''; pEl.style.opacity=''; }, 450);
+  curPage = pg;
+  document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('nb-'+pg).classList.add('active');
+  nEl.scrollTop = 0;
+  if(pg==='library') renderLib();
+  if(pg==='profile') upSavedCount();
+}
+
+/* ── TOOL DETAIL PAGE ── */
+var detData = {};
+var toolIcons = {
+  quran:  { bg:'#1B6B4A', svg:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>' },
+  hadith: { bg:'#1B6B4A', svg:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>' },
+  seerah: { bg:'#6B3A9E', svg:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>' },
+  fiqh:   { bg:'#1565C0', svg:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>' },
+  atheism:{ bg:'#B84000', svg:'<line x1="12" y1="3" x2="12" y2="21"/><path d="M5 21h14"/><circle cx="6" cy="14" r="3"/><circle cx="18" cy="14" r="3"/><line x1="3" y1="10" x2="9" y2="10"/><line x1="15" y1="10" x2="21" y2="10"/>' },
+  signs:  { bg:'#8B6500', svg:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/><path d="M19 3l.5 1.5L21 5l-1.5.5L19 7l-.5-1.5L17 5l1.5-.5z"/>' },
+  orient:   { bg:'#005F56', svg:'<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>' },
+  halal:    { bg:'#2E7D32', svg:'<path d="M9 12l2 2 4-4"/><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>' },
+  history:  { bg:'#E65100', svg:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>' },
+  kalam:    { bg:'#512DA8', svg:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>' },
+  religion: { bg:'#C62828', svg:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>' },
+  tasawwuf: { bg:'#6A1B9A', svg:'<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' }
+};
+
+function openDetail(name, arabic, desc, urdu, url, key){
+  detData = {name:name, arabic:arabic, desc:desc, urdu:urdu, url:url, key:key};
+  detailUrl = url;
+
+  // Fill detail page content
+  var ti = toolIcons[key] || toolIcons.quran;
+  document.getElementById('det-icon').style.background = ti.bg;
+  document.getElementById('det-icon-svg').innerHTML = ti.svg;
+  document.getElementById('det-name').textContent = name;
+  document.getElementById('det-arabic').textContent = arabic;
+  document.getElementById('det-desc').textContent = desc;
+  var urduEl = document.getElementById('det-urdu');
+  if(urduEl) urduEl.textContent = urdu;
+  var btnLbl = document.getElementById('det-btn-lbl');
+  if(btnLbl) btnLbl.textContent = 'Launch ' + name;
+
+  // Slide up detail page
+  var det = document.getElementById('tool-detail');
+  det.style.display = 'flex';
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      det.classList.add('show');
+    });
+  });
+  det.scrollTop = 0;
+}
+
+function closeDetail(){
+  var det = document.getElementById('tool-detail');
+  det.classList.remove('show');
+  setTimeout(function(){ det.style.display = 'none'; }, 460);
+}
+
+function openDetailUrl(){
+  if(detailUrl) window.open(detailUrl,'_blank');
+}
+
+function launchFromDetail(){
+  if(detailUrl) window.open(detailUrl,'_blank');
+}
+
+/* ── UTILITY LAUNCH — direct ── */
+function launchUtil(name, sub, url){
+  showToast('Opening ' + name + '...');
+  setTimeout(function(){ window.open(url,'_blank'); }, 400);
+}
+
+/* ── SAVE / LIBRARY ── */
+var toolMeta = {
+  quran:  {stroke:'#1B6B4A',bg:'#E8F5EE'},
+  hadith: {stroke:'#1B6B4A',bg:'#E3F4F0'},
+  seerah: {stroke:'#7B3FA0',bg:'#F3EEF9'},
+  fiqh:   {stroke:'#1565C0',bg:'#EBF2FD'},
+  atheism:{stroke:'#D4500A',bg:'#FEF0E8'},
+  signs:  {stroke:'#B8860B',bg:'#FEFBE8'},
+  orient:   {stroke:'#00695C',bg:'#E0F4F1'},
+  halal:    {stroke:'#2E7D32',bg:'#E8F5EE'},
+  history:  {stroke:'#E65100',bg:'#FFF8E1'},
+  kalam:    {stroke:'#512DA8',bg:'#EDE7F6'},
+  religion: {stroke:'#C62828',bg:'#FCE4EC'},
+  tasawwuf: {stroke:'#6A1B9A',bg:'#F3E5F5'}
+};
+function toggleSave(e, label, key){
+  e.stopPropagation();
+  var btn = document.getElementById('sv-'+key);
+  if(saved[key]){ delete saved[key]; btn.classList.remove('on'); showToast('Removed from Library'); }
+  else { saved[key]={label:label}; btn.classList.add('on'); showToast('Saved to Library ✦'); }
+  upSavedCount();
+}
+function renderLib(){
+  var el = document.getElementById('lib-content');
+  var keys = Object.keys(saved);
+  if(!keys.length){
+    el.innerHTML='<div class="lib-empty"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><p>Your library is empty. Bookmark AI scholars from the home page to access them here.</p></div>';
+    return;
+  }
+  el.innerHTML = keys.map(function(k){
+    var m = toolMeta[k]||{stroke:'#1B6B4A',bg:'#E8F5EE'};
+    return '<div class="lib-item">'
+      +'<div class="lib-item-icon" style="background:'+m.bg+'"><svg style="stroke:'+m.stroke+'" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>'
+      +'<div class="lib-item-info"><div class="lib-item-name">'+saved[k].label+'</div><div class="lib-item-cat">AI Islamic Scholar</div></div>'
+      +'<button class="lib-rm" onclick="rmSaved(\''+k+'\')" aria-label="Remove"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>'
+      +'</div>';
+  }).join('');
+}
+function rmSaved(key){
+  delete saved[key];
+  var b = document.getElementById('sv-'+key); if(b) b.classList.remove('on');
+  renderLib(); upSavedCount(); showToast('Removed from Library');
+}
+function upSavedCount(){
+  var c = Object.keys(saved).length;
+  var el = document.getElementById('dsp-saved');
+  if(el) el.textContent = c+(c===1?' item saved':' items saved');
+}
+
+/* ── TOAST ── */
+var ttimer;
+function showToast(msg){
+  var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(ttimer); ttimer=setTimeout(function(){ t.classList.remove('show'); },2000);
+}
+
+/* ── SEARCH ── */
+function focusSearch(){
+  goPage('home');
+  setTimeout(function(){ var inp=document.querySelector('#page-home input'); if(inp)inp.focus(); },500);
+}
+
+/* ── PROFILE ── */
+function openEdit(){
+  document.getElementById('ei-name').value=P.name;
+  document.getElementById('ei-dept').value=P.dept;
+  document.getElementById('ei-inst').value=P.inst;
+  document.getElementById('ei-wa').value=P.wa;
+  document.getElementById('ei-email').value=P.email;
+  document.getElementById('edit-modal').classList.add('show');
+}
+function closeEdit(){ document.getElementById('edit-modal').classList.remove('show'); }
+function saveEdit(){
+  P.name  = document.getElementById('ei-name').value.trim()  || P.name;
+  P.dept  = document.getElementById('ei-dept').value.trim()  || P.dept;
+  P.inst  = document.getElementById('ei-inst').value.trim()  || P.inst;
+  P.wa    = document.getElementById('ei-wa').value.trim()    || P.wa;
+  P.email = document.getElementById('ei-email').value.trim() || P.email;
+  document.getElementById('dsp-name').textContent=P.name;
+  document.getElementById('dsp-dept').textContent=P.dept;
+  document.getElementById('dsp-inst').textContent=P.inst;
+  document.getElementById('dsp-inst2').textContent=P.inst;
+  document.getElementById('dsp-dept2').textContent=P.dept;
+  document.getElementById('dsp-wa').textContent=P.wa;
+  var ea=document.getElementById('dsp-email'); ea.textContent=P.email; ea.href='mailto:'+P.email;
+  closeEdit(); showToast('Profile updated ✦');
+}
+function doContact(){ window.open('https://wa.me/'+P.wa.replace(/\D/g,''),'_blank'); }
+function doWhatsApp(){ window.open('https://wa.me/'+P.wa.replace(/\D/g,''),'_blank'); }
+function doEmail(){ window.location.href='mailto:'+P.email; }
+
+// Absolute safety fallback
+setTimeout(function(){
+  var s = document.getElementById('splash');
+  if(s && s.style.display !== 'none'){ skipSplash(); }
+}, 5000);
+
+/* ── PWA INSTALL — always show banner on load ── */
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  pwaPrompt = e;
+});
+
+window.addEventListener('appinstalled', function(){
+  closePwaBanner();
+  showToast('Al-Turath AI installed ✦');
+});
+
+document.getElementById('pwa-install-btn').addEventListener('click', function(){
+  if(pwaPrompt){
+    pwaPrompt.prompt();
+    pwaPrompt.userChoice.then(function(r){
+      pwaPrompt = null;
+      closePwaBanner();
+    });
+  } else {
+    showToast('Tap browser menu → "Add to Home Screen"');
+    setTimeout(closePwaBanner, 800);
+  }
+});
+</script>
+
+<!-- Service Worker Registration for PWA -->
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('./sw.js')
+      .then(function(reg){
+        console.log('SW registered:', reg.scope);
+      })
+      .catch(function(err){
+        console.log('SW error:', err);
+      });
+  });
+}
+</script>
+</body>
+</html>
