@@ -776,8 +776,6 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
           <div class="t-arrow">›</div>
         </div>
 
-      </div>
-
         <!-- 8. Fiqh al-Halal -->
         <div class="t-card" onclick="openDetail('Insight Fiqh al-Halal &amp; Its Standards','فقه الحلال والمعايير','A focused AI System for scholarly analysis of Fiqh al-Halal, Nutrition Standards, and Compliance with International &amp; National Halal Food Regulations.','فقہ الحلال، غذائی معیارات اور بین الاقوامی وقومی حلال فوڈ ضوابط کا علمی تجزیہ','https://gemini.google.com/gem/4445b3dbdee0','halal')">
           <button class="t-save" id="sv-halal" onclick="toggleSave(event,'Insight Fiqh al-Halal &amp; Its Standards','halal')" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
@@ -832,6 +830,8 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
           </div>
           <div class="t-arrow">›</div>
         </div>
+
+      </div>
 
       <!-- Featured Card -->
       <div class="feat-wrap">
@@ -1173,12 +1173,12 @@ var toolMeta = {
   fiqh:   {stroke:'#1565C0',bg:'#EBF2FD'},
   atheism:{stroke:'#D4500A',bg:'#FEF0E8'},
   signs:  {stroke:'#B8860B',bg:'#FEFBE8'},
-  orient: {stroke:'#00695C',bg:'#E0F4F1'},
-  halal:  {stroke:'#2E7D32',bg:'#E8F5EE'},
-  history:{stroke:'#E65100',bg:'#FFF8E1'},
-  kalam:  {stroke:'#512DA8',bg:'#EDE7F6'},
-  religion:{stroke:'#C62828',bg:'#FCE4EC'},
-  tasawwuf:{stroke:'#6A1B9A',bg:'#F3E5F5'}
+  orient:   {stroke:'#00695C',bg:'#E0F4F1'},
+  halal:    {stroke:'#2E7D32',bg:'#E8F5EE'},
+  history:  {stroke:'#E65100',bg:'#FFF8E1'},
+  kalam:    {stroke:'#512DA8',bg:'#EDE7F6'},
+  religion: {stroke:'#C62828',bg:'#FCE4EC'},
+  tasawwuf: {stroke:'#6A1B9A',bg:'#F3E5F5'}
 };
 function toggleSave(e, label, key){
   e.stopPropagation();
