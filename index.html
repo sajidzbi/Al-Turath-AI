@@ -14,7 +14,7 @@
 <title>Al-Turath AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}input,textarea{-webkit-user-select:text!important;user-select:text!important}
 :root{
   --green:#1B6B4A;--green-dark:#134D35;--green-mid:#1E7A54;
   --green-light:#2A9068;--green-pale:#E8F5EE;--green-bg:#F0F7F3;
@@ -544,6 +544,26 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
 <body>
 
 <div id="bg-tile"></div>
+<script>
+(function(){
+// Disable right-click
+document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+// Disable F12, Ctrl+Shift+I/J/U, Ctrl+U
+document.addEventListener('keydown',function(e){
+  if(e.keyCode===123){e.preventDefault();return false;}
+  if(e.ctrlKey&&e.shiftKey&&(e.keyCode===73||e.keyCode===74||e.keyCode===67)){e.preventDefault();return false;}
+  if(e.ctrlKey&&e.keyCode===85){e.preventDefault();return false;}
+});
+// Disable text selection
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
+// Devtools detection — size trick
+var t=setInterval(function(){
+  var w=window.outerWidth-window.innerWidth>160;
+  var h=window.outerHeight-window.innerHeight>160;
+  if(w||h){document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#134D35;color:#C49A2A;font-family:serif;font-size:1.4rem;text-align:center;padding:20px">Al-Turath AI<br><span style="font-size:0.8rem;color:rgba(255,255,255,0.5);display:block;margin-top:8px">Unauthorized access detected</span></div>';}
+},1000);
+})();
+</script>
 <div id="toast"></div>
 
 <!-- ═══════════════ PWA INSTALL BANNER ═══════════════ -->
@@ -1015,14 +1035,14 @@ var detailUrl = '';
 var pwaPrompt = null;
 
 function showPwaBanner(){
-  if(sessionStorage.getItem('pwa-dismissed')) return;
+  if(localStorage.getItem('pwa-installed')) return;
   var b = document.getElementById('pwa-banner');
   if(b) b.classList.add('show');
 }
 function closePwaBanner(){
   var b = document.getElementById('pwa-banner');
   if(b) b.classList.remove('show');
-  sessionStorage.setItem('pwa-dismissed','1');
+  localStorage.setItem('pwa-installed','1');
 }
 
 function skipSplash(){
@@ -1269,6 +1289,7 @@ window.addEventListener('beforeinstallprompt', function(e){
 });
 
 window.addEventListener('appinstalled', function(){
+  localStorage.setItem('pwa-installed','1');
   closePwaBanner();
   showToast('Al-Turath AI installed ✦');
 });
