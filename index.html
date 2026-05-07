@@ -457,6 +457,30 @@ body > div:last-of-type:not(#app):not(#splash):not(#trans):not(#tool-detail):not
 .util-card:nth-child(5){animation-delay:.28s}
 .util-card:nth-child(6){animation-delay:.35s}
 
+/* ─── UPDATE NOTIFICATION BANNER ─── */
+#update-banner{
+  position:fixed;bottom:80px;left:12px;right:12px;z-index:700;
+  background:linear-gradient(135deg,#134D35,#1B6B4A);
+  border-radius:16px;padding:14px 16px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  transform:translateY(120px);opacity:0;
+  transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s ease;
+  pointer-events:none;
+}
+#update-banner.show{transform:translateY(0);opacity:1;pointer-events:all}
+.upd-icon{width:42px;height:42px;background:rgba(255,255,255,0.15);border-radius:11px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.3rem}
+.upd-text{flex:1;min-width:0}
+.upd-title{font-family:'Lato',sans-serif;font-weight:700;font-size:0.88rem;color:#fff}
+.upd-sub{font-size:0.7rem;color:rgba(255,255,255,0.65);margin-top:2px}
+.upd-btn{background:var(--gold-light);color:#134D35;border:none;border-radius:8px;
+  padding:8px 14px;font-size:0.78rem;font-family:'Lato',sans-serif;font-weight:700;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.2s}
+.upd-btn:hover{background:#fff}
+.upd-close{background:transparent;border:none;color:rgba(255,255,255,0.6);
+  cursor:pointer;padding:2px 6px;font-size:1rem;line-height:1;flex-shrink:0}
+
 /* ─── PWA INSTALL BANNER — exactly like SM Prayer Times ─── */
 #pwa-banner{
   position:fixed;top:0;left:0;right:0;z-index:600;
@@ -565,6 +589,17 @@ var t=setInterval(function(){
 })();
 </script>
 <div id="toast"></div>
+
+<!-- ═══════════════ UPDATE NOTIFICATION BANNER ═══════════════ -->
+<div id="update-banner">
+  <div class="upd-icon">🔄</div>
+  <div class="upd-text">
+    <div class="upd-title">نئی اپڈیٹ دستیاب ہے!</div>
+    <div class="upd-sub">Al-Turath AI has been updated</div>
+  </div>
+  <button class="upd-btn" onclick="doUpdate()">Update</button>
+  <button class="upd-close" onclick="closeUpdateBanner()">✕</button>
+</div>
 
 <!-- ═══════════════ PWA INSTALL BANNER ═══════════════ -->
 <div id="pwa-banner">
@@ -1308,17 +1343,66 @@ document.getElementById('pwa-install-btn').addEventListener('click', function(){
 });
 </script>
 
-<!-- Service Worker Registration for PWA -->
+<!-- Service Worker + Auto-Update System -->
 <script>
+var updateBannerShown = false;
+
+function showUpdateBanner(){
+  if(updateBannerShown) return;
+  updateBannerShown = true;
+  var b = document.getElementById('update-banner');
+  if(b){ setTimeout(function(){ b.classList.add('show'); }, 1200); }
+}
+
+function closeUpdateBanner(){
+  var b = document.getElementById('update-banner');
+  if(b) b.classList.remove('show');
+}
+
+function doUpdate(){
+  closeUpdateBanner();
+  showToast('اپڈیٹ ہو رہا ہے... ✦');
+  setTimeout(function(){ window.location.reload(true); }, 800);
+}
+
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){
     navigator.serviceWorker.register('./sw.js')
       .then(function(reg){
-        console.log('SW registered:', reg.scope);
+        console.log('[Al-Turath] SW registered:', reg.scope);
+
+        // نئی SW مل گئی — اپڈیٹ بینر دکھائیں
+        reg.addEventListener('updatefound', function(){
+          var newWorker = reg.installing;
+          newWorker.addEventListener('statechange', function(){
+            if(newWorker.state === 'installed' && navigator.serviceWorker.controller){
+              showUpdateBanner();
+            }
+          });
+        });
+
+        // ہر 60 سیکنڈ بعد چیک کریں
+        setInterval(function(){ reg.update(); }, 60000);
       })
       .catch(function(err){
-        console.log('SW error:', err);
+        console.log('[Al-Turath] SW error:', err);
       });
+
+    // SW کا UPDATE پیغام سنیں (activate پر آتا ہے)
+    navigator.serviceWorker.addEventListener('message', function(event){
+      if(event.data && event.data.type === 'APP_UPDATED'){
+        showUpdateBanner();
+      }
+    });
+
+    // اگر نیا SW نے control لیا تو reload کریں
+    var refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function(){
+      if(!refreshing){
+        refreshing = true;
+        showUpdateBanner();
+      }
+    });
   });
 }
 </script>
