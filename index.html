@@ -584,7 +584,7 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
 var t=setInterval(function(){
   var w=window.outerWidth-window.innerWidth>160;
   var h=window.outerHeight-window.innerHeight>160;
-  if(w||h){document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#134D35;color:#C49A2A;font-family:serif;font-size:1.4rem;text-align:center;padding:20px">Al-Turath AI<br><span style="font-size:0.8rem;color:rgba(255,255,255,0.5);display:block;margin-top:8px">Unauthorized access detected</span></div>';}
+  if((w||h) && document.body){document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#134D35;color:#C49A2A;font-family:serif;font-size:1.4rem;text-align:center;padding:20px">Al-Turath AI<br><span style="font-size:0.8rem;color:rgba(255,255,255,0.5);display:block;margin-top:8px">Unauthorized access detected</span></div>';}
 },1000);
 })();
 </script>
@@ -1083,6 +1083,7 @@ function closePwaBanner(){
 function skipSplash(){
   var s = document.getElementById('splash');
   var app = document.getElementById('app');
+  if(!app || !s) return;
   app.classList.remove('hidden');
   app.style.visibility = 'visible';
   app.style.pointerEvents = 'all';
@@ -1097,12 +1098,11 @@ function skipSplash(){
 function initApp(){
   var s = document.getElementById('splash');
   var app = document.getElementById('app');
-  // Show app immediately behind splash
+  if(!app || !s) return;
   app.classList.remove('hidden');
   app.style.visibility = 'visible';
   app.style.pointerEvents = 'all';
   renderLib();
-  // Animate splash out
   setTimeout(function(){
     s.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
     s.style.opacity = '0';
@@ -1114,17 +1114,14 @@ function initApp(){
     }, 850);
   }, 3000);
 }
-// Try load event, fallback to DOMContentLoaded, fallback to immediate
 if(document.readyState === 'complete'){
   setTimeout(initApp, 100);
 } else {
   window.addEventListener('load', initApp);
-  // Safety fallback — if load never fires
   document.addEventListener('DOMContentLoaded', function(){
     setTimeout(function(){
-      if(document.getElementById('app').classList.contains('hidden')){
-        initApp();
-      }
+      var app = document.getElementById('app');
+      if(app && app.classList.contains('hidden')){ initApp(); }
     }, 3500);
   });
 }
@@ -1150,7 +1147,7 @@ function goPage(pg){
   setTimeout(function(){ pEl.classList.remove('out-left'); pEl.style.transform=''; pEl.style.opacity=''; }, 450);
   curPage = pg;
   document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
-  document.getElementById('nb-'+pg).classList.add('active');
+  var nbEl = document.getElementById('nb-'+pg); if(nbEl) nbEl.classList.add('active');
   nEl.scrollTop = 0;
   if(pg==='library') renderLib();
   if(pg==='profile') upSavedCount();
@@ -1191,6 +1188,7 @@ function openDetail(name, arabic, desc, urdu, url, key){
 
   // Slide up detail page
   var det = document.getElementById('tool-detail');
+  if(!det) return;
   det.style.display = 'flex';
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
@@ -1202,6 +1200,7 @@ function openDetail(name, arabic, desc, urdu, url, key){
 
 function closeDetail(){
   var det = document.getElementById('tool-detail');
+  if(!det) return;
   det.classList.remove('show');
   setTimeout(function(){ det.style.display = 'none'; }, 460);
 }
@@ -1272,7 +1271,8 @@ function upSavedCount(){
 /* ── TOAST ── */
 var ttimer;
 function showToast(msg){
-  var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  var t=document.getElementById('toast'); if(!t) return;
+  t.textContent=msg; t.classList.add('show');
   clearTimeout(ttimer); ttimer=setTimeout(function(){ t.classList.remove('show'); },2000);
 }
 
@@ -1289,9 +1289,9 @@ function openEdit(){
   document.getElementById('ei-inst').value=P.inst;
   document.getElementById('ei-wa').value=P.wa;
   document.getElementById('ei-email').value=P.email;
-  document.getElementById('edit-modal').classList.add('show');
+  var em = document.getElementById('edit-modal'); if(em) em.classList.add('show');
 }
-function closeEdit(){ document.getElementById('edit-modal').classList.remove('show'); }
+function closeEdit(){ var em=document.getElementById('edit-modal'); if(em) em.classList.remove('show'); }
 function saveEdit(){
   P.name  = document.getElementById('ei-name').value.trim()  || P.name;
   P.dept  = document.getElementById('ei-dept').value.trim()  || P.dept;
@@ -1329,7 +1329,8 @@ window.addEventListener('appinstalled', function(){
   showToast('Al-Turath AI installed ✦');
 });
 
-document.getElementById('pwa-install-btn').addEventListener('click', function(){
+var pwaBtn = document.getElementById('pwa-install-btn');
+if(pwaBtn) pwaBtn.addEventListener('click', function(){
   if(pwaPrompt){
     pwaPrompt.prompt();
     pwaPrompt.userChoice.then(function(r){
@@ -1366,44 +1367,39 @@ function doUpdate(){
 }
 
 if('serviceWorker' in navigator){
-  window.addEventListener('load', function(){
-    navigator.serviceWorker.register('./sw.js')
-      .then(function(reg){
-        console.log('[Al-Turath] SW registered:', reg.scope);
-
-        // نئی SW مل گئی — اپڈیٹ بینر دکھائیں
-        reg.addEventListener('updatefound', function(){
-          var newWorker = reg.installing;
-          newWorker.addEventListener('statechange', function(){
-            if(newWorker.state === 'installed' && navigator.serviceWorker.controller){
-              showUpdateBanner();
-            }
+  // صرف اصل ڈومین پر رجسٹر کریں — preview/localhost پر نہیں
+  var isPreview = window.location.hostname.indexOf('claudeusercontent') !== -1;
+  if(!isPreview){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('./sw.js')
+        .then(function(reg){
+          console.log('[Al-Turath] SW registered:', reg.scope);
+          reg.addEventListener('updatefound', function(){
+            var newWorker = reg.installing;
+            newWorker.addEventListener('statechange', function(){
+              if(newWorker.state === 'installed' && navigator.serviceWorker.controller){
+                showUpdateBanner();
+              }
+            });
           });
+          setInterval(function(){ reg.update(); }, 60000);
+        })
+        .catch(function(err){
+          // SW not available in this environment
         });
 
-        // ہر 60 سیکنڈ بعد چیک کریں
-        setInterval(function(){ reg.update(); }, 60000);
-      })
-      .catch(function(err){
-        console.log('[Al-Turath] SW error:', err);
+      navigator.serviceWorker.addEventListener('message', function(event){
+        if(event.data && event.data.type === 'APP_UPDATED'){
+          showUpdateBanner();
+        }
       });
 
-    // SW کا UPDATE پیغام سنیں (activate پر آتا ہے)
-    navigator.serviceWorker.addEventListener('message', function(event){
-      if(event.data && event.data.type === 'APP_UPDATED'){
-        showUpdateBanner();
-      }
+      var refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', function(){
+        if(!refreshing){ refreshing = true; showUpdateBanner(); }
+      });
     });
-
-    // اگر نیا SW نے control لیا تو reload کریں
-    var refreshing = false;
-    navigator.serviceWorker.addEventListener('controllerchange', function(){
-      if(!refreshing){
-        refreshing = true;
-        showUpdateBanner();
-      }
-    });
-  });
+  }
 }
 </script>
 </body>
